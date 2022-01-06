@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Default
   m_EditorClassIdentifier: 
   gravity: 19.62
-  walk: 4
-  sprint: 8
+  walkSpeed: 4
+  sprintSpeed: 6
   acceleration: 10
   movementMultiplier: 10
   drag: 6
@@ -23,4 +23,6 @@ MonoBehaviour:
   jumpControl: 0.4
   fallingForce: 20
   jumpMemoryTime: 0.1
+  coyoteTime: 0.1
+  jumpCount: 1
   stableSlopeAngle: 30

@@ -12,11 +12,11 @@ namespace Movement
 
 
         [Header("Movement")]
-        [SerializeField] private float walk = 4f;
-        public float Walk { get { return walk; } }
+        [SerializeField] private float walkSpeed = 4f;
+        public float WalkSpeed { get { return walkSpeed; } }
 
-        [SerializeField] private float sprint = 6f;
-        public float Sprint { get { return sprint; } }
+        [SerializeField] private float sprintSpeed = 6f;
+        public float SprintSpeed { get { return sprintSpeed; } }
 
         [SerializeField] private float acceleration = 10f;
         public float Acceleration { get { return acceleration; } }
@@ -48,6 +48,10 @@ namespace Movement
 
         [SerializeField] private float coyoteTime = .1f;
         public float CoyoteTime { get { return coyoteTime; } }
+
+        [SerializeField] private int jumpCount = 1;
+        public int JumpCount { get { return jumpCount; } }
+
 
 
 

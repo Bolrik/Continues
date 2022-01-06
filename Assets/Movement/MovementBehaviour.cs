@@ -1,4 +1,5 @@
 using UnityEngine;
+using Utils;
 
 namespace Movement
 {
@@ -8,20 +9,30 @@ namespace Movement
         [SerializeField] private IInputStateProvider inputStateProvider;
         private IInputStateProvider InputStateProvider { get { return this.inputStateProvider; } set { this.inputStateProvider = value; } }
 
-        [Header("General")]
         [SerializeField] private Transform root;
         private Transform Root { get { return this.root; } set { this.root = value; } }
+
+
+        [Header("Ground Detection")]
+        [SerializeField] private SphereCollisionCheck groundCheck;
+        public SphereCollisionCheck GroundCheck { get { return groundCheck; } }
+
 
         [Header("Config")]
         [SerializeField] private MovementConfig config;
         public MovementConfig Config { get { return config; } private set { config = value; } }
 
-        [Header("Ground Detection")]
-        [SerializeField] private Transform groundTransform;
-        public Transform GroundTransform { get { return groundTransform; } }
+        [SerializeField] private MovementAbility ability;
+        public MovementAbility Ability { get { return ability; } private set { ability = value; } }
 
 
+        // Jumping
+        float JumpMemoryTime { get; set; } = 1; // Jump Memory
+        float CoyoteTime { get; set; } = 1; // Coyote Time
+        int JumpCount { get; set; } // Multi Jump
+        
         float MoveSpeed { get; set; }
+
 
         Rigidbody Body { get; set; }
         Vector3 MoveDirection { get; set; }
@@ -33,9 +44,15 @@ namespace Movement
         bool DoPostUpdatePlayer { get; set; } = true;
         bool IsOnSlope { get; set; }
         bool IsSlopeMovement { get; set; }
-        float LastJumpInput { get; set; } = 0;
+
 
         public bool IsGrounded { get; private set; }
+
+        // Default Values
+        int JumpCountDefault { get => (this.Config?.JumpCount + this.Ability?.JumpCount) ?? 0; }
+        float SprintSpeedDefault { get => (this.Config?.SprintSpeed + this.Ability?.SprintSpeed) ?? 0; }
+        float WalkSpeedDefault { get => (this.Config?.WalkSpeed + this.Ability?.WalkSpeed) ?? 0; }
+
 
 
         private void Start()
@@ -59,9 +76,11 @@ namespace Movement
             this.PostUpdatePlayer();
             this.UpdateSpeed();
             this.UpdateInput();
+
             this.SlopeMoveDirection = Vector3.ProjectOnPlane(this.MoveDirection, this.SlopeHit.normal);
 
-            this.LastJumpInput += Time.deltaTime;
+            this.JumpMemoryTime = Mathf.Clamp(this.JumpMemoryTime += Time.deltaTime, 0, this.Config.JumpMemoryTime);
+            this.CoyoteTime = Mathf.Clamp(this.CoyoteTime += Time.deltaTime, 0, this.Config.CoyoteTime);
         }
 
         private void FixedUpdate()
@@ -70,24 +89,6 @@ namespace Movement
         }
 
 
-        // Check for Slopes
-        private void UpdateSlope()
-        {
-            RaycastHit slopeHit;
-            if (Physics.Raycast(this.transform.position, Vector3.down, out slopeHit, 1.5f))
-            {
-                this.SlopeHit = slopeHit;
-                this.IsOnSlope = this.SlopeHit.normal != Vector3.up;
-
-                if (this.IsOnSlope)
-                {
-                    float angle = Vector3.Angle(Vector3.up, this.SlopeHit.normal);
-                    this.IsSlopeMovement = angle <= this.Config.StableSlopeAngle;
-                }
-            }
-
-            this.IsOnSlope = false;
-        }
 
         // Use Input State
         void UpdateInput()
@@ -95,52 +96,39 @@ namespace Movement
             this.MoveDirection = this.Root.forward * this.InputState.Movement.y + this.Root.right * this.InputState.Movement.x;
         }
 
-        // J-j-j-j-j-Jump
-        void Jump()
-        {
-            this.Body.velocity = new Vector3(this.Body.velocity.x, 0, this.Body.velocity.z);
-            this.Body.AddForce(this.transform.up * this.Config.JumpForce, ForceMode.Impulse);
-        }
-
+        // Update Speed depending on Grounded and Sprinting
         void UpdateSpeed()
         {
             if (this.InputState.Sprint && this.IsGrounded)
             {
-                this.MoveSpeed = Mathf.Lerp(this.MoveSpeed, this.Config.Sprint, this.Config.Acceleration * Time.deltaTime);
+                this.MoveSpeed = Mathf.Lerp(this.MoveSpeed, this.SprintSpeedDefault, this.Config.Acceleration * Time.deltaTime);
             }
             else
             {
-                this.MoveSpeed = Mathf.Lerp(this.MoveSpeed, this.Config.Walk, this.Config.Acceleration * Time.deltaTime);
+                this.MoveSpeed = Mathf.Lerp(this.MoveSpeed, this.WalkSpeedDefault, this.Config.Acceleration * Time.deltaTime);
             }
         }
 
-        void UpdateDrag()
-        {
-            if (this.IsGrounded)
-            {
-                this.Body.drag = this.Config.Drag;
-            }
-            else
-            {
-                this.Body.drag = this.Config.JumpDrag;
-            }
-        }
-
+        // Do Physics Stuff
         void UpdatePlayer()
         {
             Vector3 force = Vector3.zero;
-            bool jump = false;
             // Do Jump
             if (this.CanJump())
             {
                 this.Jump();
-                jump = true;
             }
 
             // Ground not Slope
             if (this.IsGrounded && !this.IsSlopeMovement)
             {
                 force = this.MoveDirection.normalized * this.MoveSpeed * this.Config.MovementMultiplier;
+
+                // On to steep Slope
+                if (this.IsOnSlope)
+                {
+                    force.y -= this.Config.Gravity;
+                }
                 // this.Body.AddForce(this.MoveDirection.normalized * this.MoveSpeed * this.Config.MovementMultiplier, ForceMode.Acceleration);
             }
             // Ground and Slope
@@ -168,12 +156,50 @@ namespace Movement
             this.DoPostUpdatePlayer = true;
         }
 
+        // Check whether the Player can jump or not (Coyote Time, Jump Memory...)
         bool CanJump()
         {
-            if ((this.InputState.Jump || this.LastJumpInput <= this.Config.JumpMemoryTime) && this.IsGrounded)
-                return true;
+            bool jumpInput = this.InputState.Jump;
+            bool jumpMemory = this.JumpMemoryTime < this.Config.JumpMemoryTime;
+            bool isGrounded = this.IsGrounded;
+            bool coyoteGround = this.CoyoteTime < this.Config.CoyoteTime;
+            bool jumpCount = this.JumpCount > 0;
+            bool jumpCountFirst = this.JumpCount == this.JumpCountDefault;
+
+            if (jumpCountFirst)
+            {
+                if ((jumpInput || jumpMemory) && (isGrounded || coyoteGround))
+                {
+                    Debug.Log($"JI: {jumpInput}, JM: {jumpMemory}, IG: {isGrounded}, CG: {coyoteGround}");
+                    return true;
+                }
+            }
+            else
+            {
+                if (jumpCount && jumpInput)
+                {
+                    return true;
+                }
+            }
+
+            //if ((jumpInput || jumpMemory) && (isGrounded || coyoteGround))
+            //{
+            //    Debug.Log($"JI: {jumpInput}, JM: {jumpMemory}, IG: {isGrounded}, CG: {coyoteGround}");
+            //    return true;
+            //}
 
             return false;
+        }
+
+        // J-j-j-j-j-Jump
+        void Jump()
+        {
+            this.Body.velocity = new Vector3(this.Body.velocity.x, 0, this.Body.velocity.z);
+            this.Body.AddForce(this.transform.up * this.Config.JumpForce, ForceMode.Impulse);
+
+            this.CoyoteTime = this.Config.CoyoteTime;
+            this.JumpMemoryTime = this.Config.JumpMemoryTime;
+            this.JumpCount--;
         }
 
         // This should only be called once after every 'UpdatePlayer' (Physics Update) call
@@ -190,29 +216,87 @@ namespace Movement
             this.DoPostUpdatePlayer = false;
         }
 
+        // Check for Grounds
         private void UpdateGrounded()
         {
-            Collider[] colliders = new Collider[3];
-            Physics.OverlapSphereNonAlloc(this.GroundTransform.position, .1f, colliders);
-            for (int i = 0; i < colliders.Length; i++)
+            if (this.GroundCheck.CheckNonAloc(3))
             {
-                Collider collider = colliders[i];
-                if (collider == null ||
-                    collider.transform.IsChildOf(this.transform))
-                    continue;
-
                 this.IsGrounded = true;
+
+                // Just recently jumped...
+                if (this.Body.velocity.y > 0)
+                {
+                    // Prevent Coyote Time to reset midair
+                    this.CoyoteTime = this.Config.CoyoteTime;
+                }
+                else
+                {
+                    this.CoyoteTime = 0;
+                    this.JumpCount = this.JumpCountDefault;
+                }
+
                 return;
             }
 
             this.IsGrounded = false;
+            return;
+
+            //Collider[] colliders = new Collider[3];
+            //Physics.OverlapSphereNonAlloc(this.GroundTransform.position, .1f, colliders);
+
+            //for (int i = 0; i < colliders.Length; i++)
+            //{
+            //    Collider collider = colliders[i];
+            //    if (collider == null ||
+            //        collider.transform.IsChildOf(this.transform))
+            //        continue;
+
+            //    this.IsGrounded = true;
+            //    this.CoyoteTime = 0;
+            //    return;
+            //}
+
+            //this.IsGrounded = false;
+        }
+
+        // Update Drag
+        private void UpdateDrag()
+        {
+            if (this.IsGrounded)
+            {
+                this.Body.drag = this.Config.Drag;
+            }
+            else
+            {
+                this.Body.drag = this.Config.JumpDrag;
+            }
+        }
+
+        // Check for Slopes
+        private void UpdateSlope()
+        {
+            RaycastHit slopeHit;
+            if (Physics.Raycast(this.transform.position, Vector3.down, out slopeHit, 1.5f))
+            {
+                this.SlopeHit = slopeHit;
+                this.IsOnSlope = this.SlopeHit.normal != Vector3.up;
+
+                if (this.IsOnSlope)
+                {
+                    float angle = Vector3.Angle(Vector3.up, this.SlopeHit.normal);
+                    this.IsSlopeMovement = angle <= this.Config.StableSlopeAngle;
+                    return;
+                }
+            }
+
+            this.IsOnSlope = false;
         }
 
         public void UpdateInputState(InputState inputState)
         {
             this.InputState = this.InputState.Combine(inputState);
             if (inputState.Jump)
-                this.LastJumpInput = 0;
+                this.JumpMemoryTime = 0;
         }
     }
 }
