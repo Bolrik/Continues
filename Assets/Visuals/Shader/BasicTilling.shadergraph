@@ -321,8 +321,8 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -763.967529296875,
-            "y": 37.032501220703128,
+            "x": -811.0,
+            "y": 112.0,
             "width": 208.0,
             "height": 326.0
         }
@@ -361,7 +361,7 @@
     "m_ShaderOutputName": "Offset",
     "m_StageCapability": 3,
     "m_Value": {
-        "x": 0.0,
+        "x": 0.1899999976158142,
         "y": 0.0
     },
     "m_DefaultValue": {

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 46204c45f5c91c746aa8a9a518291d12, type: 3}
-  m_Name: Default
+  m_Name: Debug
   m_EditorClassIdentifier: 
   gravity: 19.62
   walkSpeed: 4
@@ -20,9 +20,9 @@ MonoBehaviour:
   drag: 6
   jumpDrag: 2
   jumpForce: 9.81
-  jumpControl: 0.4
+  jumpControl: 1
   fallingForce: 20
-  jumpMemoryTime: 0.1
+  jumpMemoryTime: 1
   coyoteTime: 0.2
   jumpCount: 1
-  stableSlopeAngle: 35
+  stableSlopeAngle: 90

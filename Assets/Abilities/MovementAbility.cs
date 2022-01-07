@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Movement
+namespace Abilities
 {
     // Provides Extra Stats for Movement
     [CreateAssetMenu(fileName = "New Movement Ability", menuName = "Movement/Movement Ability")]
@@ -14,6 +14,9 @@ namespace Movement
 
         [SerializeField] private float walkSpeed = 0;
         public float WalkSpeed { get { return walkSpeed; } }
+
+        [SerializeField] private int stableSlopeAngle = 0;
+        public int StableSlopeAngle { get { return stableSlopeAngle; } }
 
     }
 }

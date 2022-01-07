@@ -12,5 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bcbf5903732b40b4bbffae3de2d00094, type: 3}
   m_Name: Double Jump
   m_EditorClassIdentifier: 
+  previewSprite:
+    sprite: {fileID: -5009938196186240363, guid: 5533990ca9cf137478c95e554ef651f4, type: 3}
+    color: {r: 0, g: 1, b: 0.15068698, a: 1}
   jumpCount: 1
   sprintSpeed: 0
+  walkSpeed: 0

@@ -10,11 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bcbf5903732b40b4bbffae3de2d00094, type: 3}
-  m_Name: Haste
+  m_Name: Triple Jump
   m_EditorClassIdentifier: 
   previewSprite:
-    sprite: {fileID: 166922608927897078, guid: 5533990ca9cf137478c95e554ef651f4, type: 3}
-    color: {r: 1, g: 0.6343899, b: 0, a: 1}
-  jumpCount: 0
-  sprintSpeed: 6
-  walkSpeed: 2
+    sprite: {fileID: 1890432790580458046, guid: 5533990ca9cf137478c95e554ef651f4, type: 3}
+    color: {r: 0, g: 1, b: 0.15068698, a: 1}
+  jumpCount: 2
+  sprintSpeed: 0
+  walkSpeed: 0
+  stableSlopeAngle: 0

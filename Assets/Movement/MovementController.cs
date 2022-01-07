@@ -37,15 +37,5 @@ namespace Movement
         }
     }
 
-    public interface IInputStateProvider
-    {
-        OnInputStateChanged InputStateChanged { get; set; }
-    }
-    
-    public interface IInputStateReceiver
-    {
-        void UpdateInputState(InputState inputState);
-    }
-
     public delegate void OnInputStateChanged(InputState inputState);
 }

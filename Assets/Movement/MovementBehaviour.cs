@@ -1,3 +1,4 @@
+using Abilities;
 using UnityEngine;
 using Utils;
 
@@ -9,55 +10,91 @@ namespace Movement
         [SerializeField] private IInputStateProvider inputStateProvider;
         private IInputStateProvider InputStateProvider { get { return this.inputStateProvider; } set { this.inputStateProvider = value; } }
 
+        [SerializeField] private IAbilityStore abilityStore;
+        private IAbilityStore AbilityStore { get { return this.abilityStore; } set { this.abilityStore = value; } }
+
         [SerializeField] private Transform root;
         private Transform Root { get { return this.root; } set { this.root = value; } }
 
 
         [Header("Ground Detection")]
         [SerializeField] private SphereCollisionCheck groundCheck;
-        public SphereCollisionCheck GroundCheck { get { return groundCheck; } }
+        public SphereCollisionCheck GroundCheck { get { return this.groundCheck; } }
 
 
         [Header("Config")]
         [SerializeField] private MovementConfig config;
-        public MovementConfig Config { get { return config; } private set { config = value; } }
+        public MovementConfig Config { get { return this.config; } private set { this.config = value; } }
 
         [SerializeField] private MovementAbility ability;
-        public MovementAbility Ability { get { return ability; } private set { ability = value; } }
+        public MovementAbility Ability { get { return this.ability; } private set { this.ability = value; } }
 
 
         // Jumping
         float JumpMemoryTime { get; set; } = 1; // Jump Memory
         float CoyoteTime { get; set; } = 1; // Coyote Time
         int JumpCount { get; set; } // Multi Jump
-        
-        float MoveSpeed { get; set; }
 
 
+        InputState InputState { get; set; }
         Rigidbody Body { get; set; }
+        bool DoPostUpdatePlayer { get; set; } = true;
+
+        // Movement
         Vector3 MoveDirection { get; set; }
         Vector3 SlopeMoveDirection { get; set; }
+        float MoveSpeed { get; set; }
+        public bool IsGrounded { get; private set; }
+
+
+
+        // Slopes
         RaycastHit SlopeHit { get; set; }
-        InputState InputState { get; set; }
-
-
-        bool DoPostUpdatePlayer { get; set; } = true;
         bool IsOnSlope { get; set; }
         bool IsSlopeMovement { get; set; }
 
-
-        public bool IsGrounded { get; private set; }
-
         // Default Values
-        int JumpCountDefault { get => (this.Config?.JumpCount + this.Ability?.JumpCount) ?? 0; }
-        float SprintSpeedDefault { get => (this.Config?.SprintSpeed + this.Ability?.SprintSpeed) ?? 0; }
-        float WalkSpeedDefault { get => (this.Config?.WalkSpeed + this.Ability?.WalkSpeed) ?? 0; }
+        int JumpCountDefault => this.CalculateJumpCountDefault();
+        float WalkSpeedDefault => this.CalculateWalkSpeedDefault();
+        float SprintSpeedDefault => this.CalculateSprintSpeedDefault();
+        float StableSlopeAngleDefault => this.CalculateStableSlopeAngleDefault();
 
+        #region Auto Property Calculations
 
+        private float CalculateWalkSpeedDefault()
+        {
+            float toReturn = 0;
+            if (this.Config != null) toReturn += this.Config.WalkSpeed;
+            if (this.Ability != null) toReturn += this.Ability.WalkSpeed;
+            return toReturn;
+        }
+        private float CalculateSprintSpeedDefault()
+        {
+            float toReturn = 0;
+            if (this.Config != null) toReturn += this.Config.SprintSpeed;
+            if (this.Ability != null) toReturn += this.Ability.SprintSpeed;
+            return toReturn;
+        }
+        private int CalculateJumpCountDefault()
+        {
+            int toReturn = 0;
+            if (this.Config != null) toReturn += this.Config.JumpCount;
+            if (this.Ability != null) toReturn += this.Ability.JumpCount;
+            return toReturn;
+        }
+        private float CalculateStableSlopeAngleDefault()
+        {
+            float toReturn = 0;
+            if (this.Config != null) toReturn = Mathf.Max(toReturn, this.Config.StableSlopeAngle);
+            if (this.Ability != null) toReturn = Mathf.Max(toReturn, this.Ability.StableSlopeAngle);
+            return toReturn;
+        }
+        #endregion
 
         private void Start()
         {
             this.InputStateProvider = this.GetComponent<IInputStateProvider>();
+            this.AbilityStore = this.GetComponent<IAbilityStore>();
 
             if (this.InputStateProvider == null)
             {
@@ -66,6 +103,9 @@ namespace Movement
             }
 
             this.InputStateProvider.InputStateChanged += this.UpdateInputState;
+
+            if (this.AbilityStore != null)
+                this.AbilityStore.AbilityChanged += this.UpdateAbility;
 
             this.Body = this.GetComponent<Rigidbody>();
             this.Body.freezeRotation = true;
@@ -107,6 +147,11 @@ namespace Movement
             {
                 this.MoveSpeed = Mathf.Lerp(this.MoveSpeed, this.WalkSpeedDefault, this.Config.Acceleration * Time.deltaTime);
             }
+
+            Debug.Log(this.WalkSpeedDefault);
+            Debug.Log(this.SprintSpeedDefault);
+            Debug.Log(this.Config?.WalkSpeed);
+            Debug.Log(this.Ability?.WalkSpeed);
         }
 
         // Do Physics Stuff
@@ -129,13 +174,11 @@ namespace Movement
                 {
                     force.y -= this.Config.Gravity;
                 }
-                // this.Body.AddForce(this.MoveDirection.normalized * this.MoveSpeed * this.Config.MovementMultiplier, ForceMode.Acceleration);
             }
             // Ground and Slope
             else if (this.IsGrounded && this.IsSlopeMovement)
             {
                 force = this.SlopeMoveDirection.normalized * this.MoveSpeed * this.Config.MovementMultiplier;
-                // this.Body.AddForce(this.SlopeMoveDirection.normalized * this.MoveSpeed * this.Config.MovementMultiplier, ForceMode.Acceleration);
             }
             // Jump or Fall
             else if (!this.IsGrounded)
@@ -143,7 +186,7 @@ namespace Movement
                 force = this.MoveDirection.normalized * this.MoveSpeed * this.Config.MovementMultiplier * this.Config.JumpControl;
 
                 force.y -= this.Config.Gravity;
-                // this.Body.AddForce(this.MoveDirection.normalized * this.MoveSpeed * this.Config.MovementMultiplier * this.Config.JumpControl, ForceMode.Acceleration);
+                
                 if (this.Body.velocity.y < 0)
                 {
                     // Falling? Add more Gravity!!!!!!!1!!eins
@@ -284,7 +327,7 @@ namespace Movement
                 if (this.IsOnSlope)
                 {
                     float angle = Vector3.Angle(Vector3.up, this.SlopeHit.normal);
-                    this.IsSlopeMovement = angle <= this.Config.StableSlopeAngle;
+                    this.IsSlopeMovement = angle <= this.StableSlopeAngleDefault;
                     return;
                 }
             }
@@ -297,6 +340,26 @@ namespace Movement
             this.InputState = this.InputState.Combine(inputState);
             if (inputState.Jump)
                 this.JumpMemoryTime = 0;
+        }
+
+        private void UpdateAbility(Ability ability)
+        {
+            Debug.Log("Update Ability");
+
+            if (ability == null)
+            {
+                Debug.Log($"NULL >> {ability}");
+                this.Ability = null;
+                return;
+            }
+
+            if (ability is MovementAbility movementAbility)
+            {
+                this.Ability = movementAbility;
+                Debug.Log($"IS MA >> {ability} ->> {this.Ability}");
+            }
+            else
+                Debug.Log($"IS NOT MA>> {ability}");
         }
     }
 }
