@@ -147,11 +147,6 @@ namespace Movement
             {
                 this.MoveSpeed = Mathf.Lerp(this.MoveSpeed, this.WalkSpeedDefault, this.Config.Acceleration * Time.deltaTime);
             }
-
-            Debug.Log(this.WalkSpeedDefault);
-            Debug.Log(this.SprintSpeedDefault);
-            Debug.Log(this.Config?.WalkSpeed);
-            Debug.Log(this.Ability?.WalkSpeed);
         }
 
         // Do Physics Stuff
@@ -209,27 +204,34 @@ namespace Movement
             bool jumpCount = this.JumpCount > 0;
             bool jumpCountFirst = this.JumpCount == this.JumpCountDefault;
 
-            if (jumpCountFirst)
+            if (jumpCount && (jumpInput || jumpMemory))
             {
-                if ((jumpInput || jumpMemory) && (isGrounded || coyoteGround))
-                {
-                    Debug.Log($"JI: {jumpInput}, JM: {jumpMemory}, IG: {isGrounded}, CG: {coyoteGround}");
-                    return true;
-                }
-            }
-            else
-            {
-                if (jumpCount && jumpInput)
-                {
-                    return true;
-                }
+                return true;
             }
 
-            //if ((jumpInput || jumpMemory) && (isGrounded || coyoteGround))
+            //bool jumpInput = this.InputState.Jump;
+            //bool jumpMemory = this.JumpMemoryTime < this.Config.JumpMemoryTime;
+            //bool isGrounded = this.IsGrounded;
+            //bool coyoteGround = this.CoyoteTime < this.Config.CoyoteTime;
+            //bool jumpCount = this.JumpCount > 0;
+            //bool jumpCountFirst = this.JumpCount == this.JumpCountDefault;
+
+            //if (jumpCountFirst)
             //{
-            //    Debug.Log($"JI: {jumpInput}, JM: {jumpMemory}, IG: {isGrounded}, CG: {coyoteGround}");
-            //    return true;
+            //    if ((jumpInput || jumpMemory) && (isGrounded || coyoteGround))
+            //    {
+            //        Debug.Log($"JI: {jumpInput}, JM: {jumpMemory}, IG: {isGrounded}, CG: {coyoteGround}");
+            //        return true;
+            //    }
             //}
+            //else
+            //{
+            //    if (jumpCount && jumpInput)
+            //    {
+            //        return true;
+            //    }
+            //}
+
 
             return false;
         }

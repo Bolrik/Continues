@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Conditions;
+using UnityEngine;
 
 namespace Abilities
 {
@@ -8,6 +9,9 @@ namespace Abilities
         [SerializeField] private Transform previewTransform;
         public Transform PreviewTransform { get { return previewTransform; } }
 
+        [SerializeField] private Transform beaconBeam;
+        public Transform BeaconBeam { get { return beaconBeam; } }
+
         [SerializeField] private SpriteRenderer previewSpriteRenderer;
         public SpriteRenderer PreviewSpriteRenderer { get { return previewSpriteRenderer; } }
 
@@ -15,11 +19,25 @@ namespace Abilities
         [SerializeField] private Ability stored;
         public Ability Stored { get { return stored; } private set { stored = value; } }
 
+        [SerializeField] private bool isPersistent = false;
+        public bool IsPersistent { get { return isPersistent; } }
+
+        [SerializeField] private ConditionContainer isActiveConditionContainer;
+        public ConditionContainer IsActiveConditionContainer { get { return isActiveConditionContainer; } }
+
+
+
         public OnAbilityChanged AbilityChanged { get; set; }
+        public bool IsActive { get; private set; }
 
 
         private void OnTriggerEnter(Collider other)
         {
+            if (!this.IsActive)
+                return;
+
+#warning GGF umstellen auf TriggerStay????
+
             if (other.GetComponentInParent<IAbilityReceiver>() is IAbilityReceiver abilityReceiver)
             {
                 this.SetAbility(abilityReceiver.SwapAbility(this.Stored));
@@ -33,13 +51,15 @@ namespace Abilities
 
         private void Update()
         {
+            this.IsActive = this.IsActiveConditionContainer.Check();
+
             this.AnimatePreview();
             this.DisplayPreview();
         }
 
         private void AnimatePreview()
         {
-            if (this.Stored == null)
+            if (this.Stored == null || !this.IsActive)
                 return;
 
             this.PreviewTransform.localPosition = Vector3.up * Mathf.Sin(Time.time) * .2f;
@@ -48,8 +68,9 @@ namespace Abilities
 
         private void DisplayPreview()
         {
-            if (this.Stored == null)
+            if (this.Stored == null || !this.IsActive)
             {
+                this.BeaconBeam.gameObject.SetActive(this.IsActive);
                 this.PreviewTransform.gameObject.SetActive(false);
                 this.PreviewSpriteRenderer.sprite = null;
             }
@@ -64,6 +85,9 @@ namespace Abilities
 
         public void SetAbility(Ability ability)
         {
+            if (this.IsPersistent)
+                return;
+
             this.Stored = ability;
             this.AbilityChanged?.Invoke(this.Stored);
         }
