@@ -26,6 +26,7 @@ namespace Movement
             inputState.SetLook(this.InputObserver.Player.Look.ReadValue<Vector2>());
             inputState.SetJump(this.InputObserver.Player.Jump.WasPressedThisFrame());
             inputState.SetSprint(this.InputObserver.Player.Sprint.ReadValue<float>() > 0);
+            inputState.SetActivate(this.InputObserver.Player.Activate.WasPressedThisFrame());
 
             this.InputState = inputState;
         }

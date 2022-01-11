@@ -98,6 +98,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movement: {fileID: 9009136566322509588}
+  inputController: {fileID: 9009136566322509595}
+  head: {fileID: 9009136567754110742}
+  interactionRange: 2.337
 --- !u!114 &9009136566322509588
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -64,6 +64,15 @@ namespace Inputs
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Activate"",
+                    ""type"": ""Button"",
+                    ""id"": ""a8b7a943-9f91-44d3-92a8-1bb1713b97e2"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -154,6 +163,17 @@ namespace Inputs
                     ""action"": ""Look"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""76c62d96-0f35-4527-a0b7-88d2c927c0e0"",
+                    ""path"": ""<Pointer>/press"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Activate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -166,6 +186,7 @@ namespace Inputs
             m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
             m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
             m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
+            m_Player_Activate = m_Player.FindAction("Activate", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -229,6 +250,7 @@ namespace Inputs
         private readonly InputAction m_Player_Look;
         private readonly InputAction m_Player_Jump;
         private readonly InputAction m_Player_Sprint;
+        private readonly InputAction m_Player_Activate;
         public struct PlayerActions
         {
             private @InputObserver m_Wrapper;
@@ -237,6 +259,7 @@ namespace Inputs
             public InputAction @Look => m_Wrapper.m_Player_Look;
             public InputAction @Jump => m_Wrapper.m_Player_Jump;
             public InputAction @Sprint => m_Wrapper.m_Player_Sprint;
+            public InputAction @Activate => m_Wrapper.m_Player_Activate;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -258,6 +281,9 @@ namespace Inputs
                     @Sprint.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSprint;
                     @Sprint.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSprint;
                     @Sprint.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSprint;
+                    @Activate.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnActivate;
+                    @Activate.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnActivate;
+                    @Activate.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnActivate;
                 }
                 m_Wrapper.m_PlayerActionsCallbackInterface = instance;
                 if (instance != null)
@@ -274,6 +300,9 @@ namespace Inputs
                     @Sprint.started += instance.OnSprint;
                     @Sprint.performed += instance.OnSprint;
                     @Sprint.canceled += instance.OnSprint;
+                    @Activate.started += instance.OnActivate;
+                    @Activate.performed += instance.OnActivate;
+                    @Activate.canceled += instance.OnActivate;
                 }
             }
         }
@@ -284,6 +313,7 @@ namespace Inputs
             void OnLook(InputAction.CallbackContext context);
             void OnJump(InputAction.CallbackContext context);
             void OnSprint(InputAction.CallbackContext context);
+            void OnActivate(InputAction.CallbackContext context);
         }
     }
 }

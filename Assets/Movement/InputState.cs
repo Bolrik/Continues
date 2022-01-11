@@ -8,6 +8,7 @@ namespace Movement
         public Vector2 Look { get; private set; }
         public bool Jump { get; private set; }
         public bool Sprint { get; private set; }
+        public bool Activate { get; private set; }
 
         public void SetMovement(Vector2 movement)
         {
@@ -29,12 +30,19 @@ namespace Movement
             this.Sprint = sprint;
         }
 
+        public void SetActivate(bool activate)
+        {
+            this.Activate = activate;
+        }
+
         public InputState Combine(InputState inputState)
         {
             InputState toReturn = new InputState();
             toReturn.Movement = inputState.Movement;
             toReturn.Jump = this.Jump | inputState.Jump;
             toReturn.Sprint = this.Sprint | inputState.Sprint;
+
+            toReturn.Activate = this.Activate | inputState.Activate;
 
             return toReturn;
         }
