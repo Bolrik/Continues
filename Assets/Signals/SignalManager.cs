@@ -54,6 +54,11 @@ namespace Signals
 
             return value;
         }
+
+        public float GetSignal(SignalChannel signalChannel)
+        {
+            return this.SignalValues.FirstOrDefault(signalValue => signalValue.Signal == signalChannel)?.Value ?? 0;
+        }
     }
 
     [System.Serializable]
@@ -89,5 +94,11 @@ namespace Signals
         Magenta,
         Cyan,
         Gray
+    }
+
+    public enum SignalState
+    {
+        Active,
+        Inactive
     }
 }

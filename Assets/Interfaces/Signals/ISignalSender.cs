@@ -9,5 +9,9 @@
     {
 
     }
+    
+    public interface ISignalReceiver : ISignalBase
+    {
 
+    }
 }

@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Obstacles
+namespace Interactions
 {
     public class Button : MonoBehaviour, ISignalSender, IInteractable
     {
