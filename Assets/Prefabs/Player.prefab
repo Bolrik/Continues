@@ -117,6 +117,12 @@ MonoBehaviour:
   groundCheck: {fileID: 9009136566901730617}
   config: {fileID: 11400000, guid: 3822dbb4d02d0b240994539ead9e6448, type: 2}
   ability: {fileID: 0}
+  isGrounded: 0
+  jumpMemoryTime: 0
+  coyoteTime: 0
+  jumpCount: 0
+  isOnSlope: 0
+  isSlopeMovement: 0
 --- !u!114 &9009136566322509595
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -398,7 +404,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
+  near clip plane: 0.1
   far clip plane: 1000
   field of view: 60
   orthographic: 0

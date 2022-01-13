@@ -19,31 +19,9 @@ namespace Utils
         public bool IncludeTrigger { get { return includeTrigger; } private set { includeTrigger = value; } }
 
 
-
         public bool Check()
         {
             return this.GetCheck(out _);
-            //float scaleX = this.transform.lossyScale.x / this.transform.localScale.x;
-            //float scaleY = this.transform.lossyScale.y / this.transform.localScale.y;
-            //float scaleZ = this.transform.lossyScale.z / this.transform.localScale.z;
-
-            //float scale = Mathf.Min(scaleX, scaleY, scaleZ);
-
-            //Collider[] colliders = Physics.OverlapSphere(this.transform.position +
-            //    new Vector3(this.Offset.x * scaleX, this.Offset.y * scaleY, this.Offset.z * scaleZ), this.Radius * scale,
-            //    -1, 
-            //    this.IncludeTrigger ? QueryTriggerInteraction.Collide : QueryTriggerInteraction.Ignore);
-
-            //for (int i = 0; i < colliders.Length; i++)
-            //{
-            //    Collider collider = colliders[i];
-            //    if (collider == null || this.Ignore.Any(ignore => collider.transform.IsChildOf(ignore)))
-            //        continue;
-
-            //    return true;
-            //}
-
-            //return false;
         }
 
         public bool GetCheck(out Collider[] colliders)

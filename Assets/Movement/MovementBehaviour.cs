@@ -30,6 +30,27 @@ namespace Movement
         public MovementAbility Ability { get { return this.ability; } private set { this.ability = value; } }
 
 
+        #region Debug
+        //[Header("Temp Debug")]
+        //[SerializeField] private bool isGrounded;
+        //public bool IsGrounded { get { return isGrounded; } set { isGrounded = value; } }
+
+        //[SerializeField] private float jumpMemoryTime;
+        //public float JumpMemoryTime { get { return jumpMemoryTime; } set { jumpMemoryTime = value; } }
+
+        //[SerializeField] private float coyoteTime;
+        //public float CoyoteTime { get { return coyoteTime; } set { coyoteTime = value; } }
+
+        //[SerializeField] private int jumpCount;
+        //public int JumpCount { get { return jumpCount; } set { jumpCount = value; } }
+
+        //[SerializeField] private bool isOnSlope;
+        //public bool IsOnSlope { get { return isOnSlope; } set { isOnSlope = value; } }
+
+        //[SerializeField] private bool isSlopeMovement;
+        //public bool IsSlopeMovement { get { return isSlopeMovement; } set { isSlopeMovement = value; } }
+        #endregion
+
         // Jumping
         float JumpMemoryTime { get; set; } = 1; // Jump Memory
         float CoyoteTime { get; set; } = 1; // Coyote Time
@@ -114,13 +135,11 @@ namespace Movement
         private void Update()
         {
             this.PostUpdatePlayer();
-            this.UpdateSpeed();
-            this.UpdateInput();
+            //this.UpdateInput();
+            //this.UpdateSpeed();
 
-            this.SlopeMoveDirection = Vector3.ProjectOnPlane(this.MoveDirection, this.SlopeHit.normal);
-
-            this.JumpMemoryTime = Mathf.Clamp(this.JumpMemoryTime += Time.deltaTime, 0, this.Config.JumpMemoryTime);
-            this.CoyoteTime = Mathf.Clamp(this.CoyoteTime += Time.deltaTime, 0, this.Config.CoyoteTime);
+            //this.JumpMemoryTime = Mathf.Clamp(this.JumpMemoryTime += Time.deltaTime, 0, this.Config.JumpMemoryTime);
+            //this.CoyoteTime = Mathf.Clamp(this.CoyoteTime += Time.deltaTime, 0, this.Config.CoyoteTime);
         }
 
         private void FixedUpdate()
@@ -128,124 +147,6 @@ namespace Movement
             this.UpdatePlayer();
         }
 
-
-
-        // Use Input State
-        void UpdateInput()
-        {
-            this.MoveDirection = this.Root.forward * this.InputState.Movement.y + this.Root.right * this.InputState.Movement.x;
-        }
-
-        // Update Speed depending on Grounded and Sprinting
-        void UpdateSpeed()
-        {
-            if (this.InputState.Sprint && this.IsGrounded)
-            {
-                this.MoveSpeed = Mathf.Lerp(this.MoveSpeed, this.SprintSpeedDefault, this.Config.Acceleration * Time.deltaTime);
-            }
-            else
-            {
-                this.MoveSpeed = Mathf.Lerp(this.MoveSpeed, this.WalkSpeedDefault, this.Config.Acceleration * Time.deltaTime);
-            }
-        }
-
-        // Do Physics Stuff
-        void UpdatePlayer()
-        {
-            Vector3 force = Vector3.zero;
-            // Do Jump
-            if (this.CanJump())
-            {
-                this.Jump();
-            }
-
-            // Ground not Slope
-            if (this.IsGrounded && !this.IsSlopeMovement)
-            {
-                force = this.MoveDirection.normalized * this.MoveSpeed * this.Config.MovementMultiplier;
-
-                // On to steep Slope
-                if (this.IsOnSlope)
-                {
-                    force.y -= this.Config.Gravity;
-                }
-            }
-            // Ground and Slope
-            else if (this.IsGrounded && this.IsSlopeMovement)
-            {
-                force = this.SlopeMoveDirection.normalized * this.MoveSpeed * this.Config.MovementMultiplier;
-            }
-            // Jump or Fall
-            else if (!this.IsGrounded)
-            {
-                force = this.MoveDirection.normalized * this.MoveSpeed * this.Config.MovementMultiplier * this.Config.JumpControl;
-
-                force.y -= this.Config.Gravity;
-                
-                if (this.Body.velocity.y < 0)
-                {
-                    // Falling? Add more Gravity!!!!!!!1!!eins
-                    force.y -= this.Config.FallingForce;
-                }
-            }
-
-            this.Body.AddForce(force);
-
-            this.DoPostUpdatePlayer = true;
-        }
-
-        // Check whether the Player can jump or not (Coyote Time, Jump Memory...)
-        bool CanJump()
-        {
-            bool jumpInput = this.InputState.Jump;
-            bool jumpMemory = this.JumpMemoryTime < this.Config.JumpMemoryTime;
-            bool isGrounded = this.IsGrounded;
-            bool coyoteGround = this.CoyoteTime < this.Config.CoyoteTime;
-            bool jumpCount = this.JumpCount > 0;
-            bool jumpCountFirst = this.JumpCount == this.JumpCountDefault;
-
-            if (jumpCount && (jumpInput || jumpMemory))
-            {
-                return true;
-            }
-
-            //bool jumpInput = this.InputState.Jump;
-            //bool jumpMemory = this.JumpMemoryTime < this.Config.JumpMemoryTime;
-            //bool isGrounded = this.IsGrounded;
-            //bool coyoteGround = this.CoyoteTime < this.Config.CoyoteTime;
-            //bool jumpCount = this.JumpCount > 0;
-            //bool jumpCountFirst = this.JumpCount == this.JumpCountDefault;
-
-            //if (jumpCountFirst)
-            //{
-            //    if ((jumpInput || jumpMemory) && (isGrounded || coyoteGround))
-            //    {
-            //        Debug.Log($"JI: {jumpInput}, JM: {jumpMemory}, IG: {isGrounded}, CG: {coyoteGround}");
-            //        return true;
-            //    }
-            //}
-            //else
-            //{
-            //    if (jumpCount && jumpInput)
-            //    {
-            //        return true;
-            //    }
-            //}
-
-
-            return false;
-        }
-
-        // J-j-j-j-j-Jump
-        void Jump()
-        {
-            this.Body.velocity = new Vector3(this.Body.velocity.x, 0, this.Body.velocity.z);
-            this.Body.AddForce(this.transform.up * this.Config.JumpForce, ForceMode.Impulse);
-
-            this.CoyoteTime = this.Config.CoyoteTime;
-            this.JumpMemoryTime = this.Config.JumpMemoryTime;
-            this.JumpCount--;
-        }
 
         // This should only be called once after every 'UpdatePlayer' (Physics Update) call
         private void PostUpdatePlayer()
@@ -264,17 +165,12 @@ namespace Movement
         // Check for Grounds
         private void UpdateGrounded()
         {
-            if (this.GroundCheck.CheckNonAloc(3))
+            if (this.GroundCheck.CheckNonAloc(5))
             {
                 this.IsGrounded = true;
 
                 // Just recently jumped...
-                if (this.Body.velocity.y > 0)
-                {
-                    // Prevent Coyote Time to reset midair
-                    this.CoyoteTime = this.Config.CoyoteTime;
-                }
-                else
+                if (this.Body.velocity.y <= 0.25f)
                 {
                     this.CoyoteTime = 0;
                     this.JumpCount = this.JumpCountDefault;
@@ -285,23 +181,6 @@ namespace Movement
 
             this.IsGrounded = false;
             return;
-
-            //Collider[] colliders = new Collider[3];
-            //Physics.OverlapSphereNonAlloc(this.GroundTransform.position, .1f, colliders);
-
-            //for (int i = 0; i < colliders.Length; i++)
-            //{
-            //    Collider collider = colliders[i];
-            //    if (collider == null ||
-            //        collider.transform.IsChildOf(this.transform))
-            //        continue;
-
-            //    this.IsGrounded = true;
-            //    this.CoyoteTime = 0;
-            //    return;
-            //}
-
-            //this.IsGrounded = false;
         }
 
         // Update Drag
@@ -335,14 +214,42 @@ namespace Movement
             }
 
             this.IsOnSlope = false;
+            this.IsSlopeMovement = false;
         }
+
+
 
         public void UpdateInputState(InputState inputState)
         {
             this.InputState = this.InputState.Combine(inputState);
+
             if (inputState.Jump)
                 this.JumpMemoryTime = 0;
+
+            this.UpdateInput();
+            this.UpdateSpeed();
         }
+
+        // Use Input State
+        void UpdateInput()
+        {
+            this.MoveDirection = this.Root.forward * this.InputState.Movement.y + this.Root.right * this.InputState.Movement.x;
+            this.SlopeMoveDirection = Vector3.ProjectOnPlane(this.MoveDirection, this.SlopeHit.normal);
+        }
+
+        // Update Speed depending on Grounded and Sprinting
+        void UpdateSpeed()
+        {
+            if (this.InputState.Sprint && this.IsGrounded)
+            {
+                this.MoveSpeed = Mathf.Lerp(this.MoveSpeed, this.SprintSpeedDefault, this.Config.Acceleration * Time.deltaTime);
+            }
+            else
+            {
+                this.MoveSpeed = Mathf.Lerp(this.MoveSpeed, this.WalkSpeedDefault, this.Config.Acceleration * Time.deltaTime);
+            }
+        }
+
 
         private void UpdateAbility(Ability ability)
         {
@@ -363,5 +270,86 @@ namespace Movement
             else
                 Debug.Log($"IS NOT MA>> {ability}");
         }
+
+
+
+        // Do Physics Stuff
+        void UpdatePlayer()
+        {
+            Vector3 force = Vector3.zero;
+            // Do Jump
+            if (this.CanJump())
+            {
+                this.Jump();
+            }
+
+            // Ground not Slope
+            if (this.IsGrounded && !this.IsSlopeMovement)
+            {
+                force = this.MoveDirection.normalized * this.MoveSpeed * this.Config.MovementMultiplier;
+                force.y -= this.Config.Gravity * .01f;
+
+                // On to steep Slope
+                if (this.IsOnSlope)
+                {
+                    force.y -= this.Config.Gravity;
+                }
+            }
+            // Ground and Slope
+            else if (this.IsGrounded && this.IsSlopeMovement)
+            {
+                force = this.SlopeMoveDirection.normalized * this.MoveSpeed * this.Config.MovementMultiplier;
+            }
+            // Jump or Fall
+            else if (!this.IsGrounded)
+            {
+                force = this.MoveDirection.normalized * this.MoveSpeed * this.Config.MovementMultiplier * this.Config.JumpControl;
+
+                force.y -= this.Config.Gravity;
+
+                if (this.Body.velocity.y < 0)
+                {
+                    // Falling? Add more Gravity!!!!!!!1!!eins
+                    force.y -= this.Config.FallingForce;
+                }
+            }
+
+            this.Body.AddForce(force);
+
+            this.DoPostUpdatePlayer = true;
+            this.JumpMemoryTime = Mathf.Clamp(this.JumpMemoryTime += Time.fixedDeltaTime, 0, this.Config.JumpMemoryTime);
+            this.CoyoteTime = Mathf.Clamp(this.CoyoteTime += Time.fixedDeltaTime, 0, this.Config.CoyoteTime);
+        }
+
+
+        // Check whether the Player can jump or not (Coyote Time, Jump Memory...)
+        bool CanJump()
+        {
+            bool jumpInput = this.InputState.Jump;
+            bool jumpMemory = this.JumpMemoryTime < this.Config.JumpMemoryTime;
+            bool isGrounded = this.IsGrounded;
+            bool coyoteGround = this.CoyoteTime < this.Config.CoyoteTime;
+            bool jumpCount = this.JumpCount > 0;
+            bool jumpCountFirst = this.JumpCount == this.JumpCountDefault;
+
+            if (jumpCount && (jumpInput || jumpMemory))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        // J-j-j-j-j-Jump
+        void Jump()
+        {
+            this.Body.velocity = new Vector3(this.Body.velocity.x, 0, this.Body.velocity.z);
+            this.Body.AddForce(this.transform.up * this.Config.JumpForce, ForceMode.Impulse);
+
+            this.CoyoteTime = this.Config.CoyoteTime;
+            this.JumpMemoryTime = this.Config.JumpMemoryTime;
+            this.JumpCount--;
+        }
+
     }
 }

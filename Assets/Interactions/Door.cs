@@ -28,8 +28,13 @@ namespace Interactions
         [SerializeField] private float timeToOpenDefault;
         public float TimeToOpenDefault { get { return this.timeToOpenDefault; } }
 
+        [SerializeField] private float reactionTimeDefault;
+        public float ReactionTimeDefault { get { return reactionTimeDefault; } }
+
+
 
         float TimeToOpen { get; set; }
+        float ReactionTime { get; set; }
         DoorState DoorState { get; set; }
 
         Vector3 GateOpenPosition { get; set; }
@@ -60,7 +65,12 @@ namespace Interactions
 
         private void UpdateColors()
         {
-            this.ColorPanel.material.color = this.SignalChannel.GetColor();
+            if (this.ReactionTime > 0 && this.ReactionTime % .2f > .1f)
+            {
+                this.ColorPanel.material.color = Color.white;
+            }
+            else
+                this.ColorPanel.material.color = this.SignalChannel.GetColor();
         }
 
         private void UpdateDoor()
@@ -68,28 +78,43 @@ namespace Interactions
             float signal = SignalManager.Instance.GetSignal(this.SignalChannel);
 
             var signalState = this.ReadSignalState(signal, this.IsInverse);
-            this.DoorState = signalState.ToDoorState();
+            this.SetSoorState(signalState.ToDoorState());
         }
 
         private void UpdateDoorPosition()
         {
-            float delta = Time.deltaTime;
+            float deltaTime = Time.deltaTime;
 
-            switch (this.DoorState)
+            this.ReactionTime = Mathf.Clamp(this.ReactionTime - deltaTime, 0, this.ReactionTimeDefault);
+
+            if (this.ReactionTime <= 0)
             {
-                case DoorState.Open:
-                    break;
-                case DoorState.Closed:
-                    delta *= -1;
-                    break;
-                default:
-                    throw new Exception();
+                switch (this.DoorState)
+                {
+                    case DoorState.Open:
+                        break;
+                    case DoorState.Closed:
+                        deltaTime *= -1;
+                        break;
+                    default:
+                        throw new Exception();
+                }
+
+                this.TimeToOpen = Mathf.Clamp(this.TimeToOpen + deltaTime, 0, this.TimeToOpenDefault);
             }
 
-            this.TimeToOpen = Mathf.Clamp(this.TimeToOpen + delta, 0, this.TimeToOpenDefault);
-
-            float percent = this.TimeToOpen / this.TimeToOpenDefault;
+            float percent = this.TimeToOpen / (this.TimeToOpenDefault == 0 ? 1 : this.TimeToOpenDefault);
             this.GateTransform.localPosition = Vector3.Slerp(this.GateClosePosition, this.GateOpenPosition, percent);
+        }
+
+
+        private void SetSoorState(DoorState doorState)
+        {
+            if (this.DoorState == doorState)
+                return;
+            
+            this.ReactionTime = this.ReactionTimeDefault;
+            this.DoorState = doorState;
         }
     }
 

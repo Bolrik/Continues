@@ -20,9 +20,9 @@ MonoBehaviour:
   drag: 6
   jumpDrag: 2
   jumpForce: 9.81
-  jumpControl: 1
+  jumpControl: 0.4
   fallingForce: 20
-  jumpMemoryTime: 1
+  jumpMemoryTime: 5
   coyoteTime: 0.2
   jumpCount: 1
-  stableSlopeAngle: 90
+  stableSlopeAngle: 35
