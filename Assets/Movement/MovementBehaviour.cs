@@ -79,6 +79,9 @@ namespace Movement
         float WalkSpeedDefault => this.CalculateWalkSpeedDefault();
         float SprintSpeedDefault => this.CalculateSprintSpeedDefault();
         float StableSlopeAngleDefault => this.CalculateStableSlopeAngleDefault();
+        float JumpForceDefault => this.CalculateJumpForceDefault();
+        float JumpControlDefault => this.CalculateJumpControlDefault();
+        float FallingForceDefault => this.CalculateFallingForceDefault();
 
         #region Auto Property Calculations
 
@@ -108,6 +111,27 @@ namespace Movement
             float toReturn = 0;
             if (this.Config != null) toReturn = Mathf.Max(toReturn, this.Config.StableSlopeAngle);
             if (this.Ability != null) toReturn = Mathf.Max(toReturn, this.Ability.StableSlopeAngle);
+            return toReturn;
+        }
+        private float CalculateJumpForceDefault()
+        {
+            float toReturn = 0;
+            if (this.Config != null) toReturn = Mathf.Max(toReturn, this.Config.JumpForce);
+            if (this.Ability != null) toReturn = Mathf.Max(toReturn, this.Ability.JumpForce);
+            return toReturn;
+        }
+        private float CalculateJumpControlDefault()
+        {
+            float toReturn = 0;
+            if (this.Config != null) toReturn += this.Config.JumpControl;
+            if (this.Ability != null) toReturn += this.Ability.JumpControl;
+            return toReturn;
+        }
+        private float CalculateFallingForceDefault()
+        {
+            float toReturn = 0;
+            if (this.Config != null) toReturn += this.Config.FallingForce;
+            if (this.Ability != null) toReturn += this.Ability.FallingForce;
             return toReturn;
         }
         #endregion
@@ -303,14 +327,14 @@ namespace Movement
             // Jump or Fall
             else if (!this.IsGrounded)
             {
-                force = this.MoveDirection.normalized * this.MoveSpeed * this.Config.MovementMultiplier * this.Config.JumpControl;
+                force = this.MoveDirection.normalized * this.MoveSpeed * this.Config.MovementMultiplier * this.JumpControlDefault;
 
                 force.y -= this.Config.Gravity;
 
                 if (this.Body.velocity.y < 0)
                 {
                     // Falling? Add more Gravity!!!!!!!1!!eins
-                    force.y -= this.Config.FallingForce;
+                    force.y -= this.FallingForceDefault;
                 }
             }
 
@@ -344,7 +368,7 @@ namespace Movement
         void Jump()
         {
             this.Body.velocity = new Vector3(this.Body.velocity.x, 0, this.Body.velocity.z);
-            this.Body.AddForce(this.transform.up * this.Config.JumpForce, ForceMode.Impulse);
+            this.Body.AddForce(this.transform.up * this.JumpForceDefault, ForceMode.Impulse);
 
             this.CoyoteTime = this.Config.CoyoteTime;
             this.JumpMemoryTime = this.Config.JumpMemoryTime;

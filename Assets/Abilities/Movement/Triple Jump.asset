@@ -15,7 +15,12 @@ MonoBehaviour:
   previewSprite:
     sprite: {fileID: 1890432790580458046, guid: 5533990ca9cf137478c95e554ef651f4, type: 3}
     color: {r: 0, g: 1, b: 0.15068698, a: 1}
+  description:
+  - Get 2 Extra Jumps
   jumpCount: 2
   sprintSpeed: 0
   walkSpeed: 0
   stableSlopeAngle: 0
+  jumpForce: 0
+  jumpControl: 0
+  fallingForce: 0

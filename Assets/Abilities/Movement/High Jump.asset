@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bcbf5903732b40b4bbffae3de2d00094, type: 3}
-  m_Name: Haste
+  m_Name: High Jump
   m_EditorClassIdentifier: 
   previewSprite:
-    sprite: {fileID: 166922608927897078, guid: 5533990ca9cf137478c95e554ef651f4, type: 3}
-    color: {r: 1, g: 0.6343899, b: 0, a: 1}
+    sprite: {fileID: 6531718798080470078, guid: 5533990ca9cf137478c95e554ef651f4, type: 3}
+    color: {r: 0, g: 0.948864, b: 1, a: 1}
   description:
-  - Walk and Run much Quicker
+  - Jump very high but lose Air Control
   jumpCount: 0
-  sprintSpeed: 6
-  walkSpeed: 2
+  sprintSpeed: 0
+  walkSpeed: 0
   stableSlopeAngle: 0
-  jumpForce: 0
-  jumpControl: 0
-  fallingForce: 0
+  jumpForce: 36
+  jumpControl: -0.2
+  fallingForce: 5

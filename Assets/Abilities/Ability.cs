@@ -7,6 +7,8 @@ namespace Abilities
         [SerializeField] private PreviewSprite previewSprite;
         public PreviewSprite PreviewSprite { get { return previewSprite; } }
 
+        [SerializeField] private string[] description;
+        public string[] Description { get { return description; } }
     }
 
     [System.Serializable]

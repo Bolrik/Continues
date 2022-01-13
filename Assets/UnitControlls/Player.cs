@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace UnitControlls
 {
@@ -26,6 +27,14 @@ namespace UnitControlls
         public float InteractionRange { get { return interactionRange; } }
 
 
+        [Header("References / Ability Display")]
+        [SerializeField] private Image abilityImage;
+        public Image AbilityImage { get { return abilityImage; } }
+
+        [SerializeField] private Text abilityDescription;
+        public Text AbilityDescription { get { return abilityDescription; } }
+
+
 
 
 
@@ -36,6 +45,7 @@ namespace UnitControlls
 
         private void Start()
         {
+            this.SetAbility(null);
             this.InputController.InputStateChanged += this.InputChanged;
         }
 
@@ -44,6 +54,21 @@ namespace UnitControlls
         {
             this.Stored = ability;
             this.AbilityChanged?.Invoke(this.Stored);
+
+            if (this.Stored == null)
+            {
+                this.AbilityDescription.gameObject.SetActive(false);
+                this.AbilityImage.gameObject.SetActive(false);
+            }
+            else
+            {
+                this.AbilityDescription.gameObject.SetActive(true);
+                this.AbilityImage.gameObject.SetActive(true);
+
+                this.AbilityDescription.text = this.Stored.Description.Aggregate((a, b) => $"{a}{Environment.NewLine}{b}");
+                this.AbilityImage.sprite = this.Stored.PreviewSprite.Sprite;
+                this.AbilityImage.color = this.Stored.PreviewSprite.Color;
+            }
         }
 
         Ability IAbilityReceiver.SwapAbility(Ability swapTo)
