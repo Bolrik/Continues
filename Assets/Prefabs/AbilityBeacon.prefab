@@ -140,7 +140,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 8af78935436950544a9789795bb1698a, type: 2}
+  - {fileID: 2100000, guid: 33dd2a257abee884fb41e0be51c818a4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -254,7 +254,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 8af78935436950544a9789795bb1698a, type: 2}
+  - {fileID: 2100000, guid: 33dd2a257abee884fb41e0be51c818a4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -500,6 +500,7 @@ MonoBehaviour:
   previewTransform: {fileID: 7622276997115354273}
   beaconBeam: {fileID: 1504834344}
   previewSpriteRenderer: {fileID: 3958142606185870522}
+  isPersistentRenderer: {fileID: 6723195142953905714}
   stored: {fileID: 11400000, guid: 25b8ee22bded4f443a87c303ccc57401, type: 2}
   isPersistent: 0
   isActiveConditionContainer: {fileID: 0}
@@ -814,7 +815,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 8af78935436950544a9789795bb1698a, type: 2}
+  - {fileID: 2100000, guid: 33dd2a257abee884fb41e0be51c818a4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

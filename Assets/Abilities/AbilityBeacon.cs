@@ -15,6 +15,9 @@ namespace Abilities
         [SerializeField] private SpriteRenderer previewSpriteRenderer;
         public SpriteRenderer PreviewSpriteRenderer { get { return previewSpriteRenderer; } }
 
+        [SerializeField] private MeshRenderer isPersistentRenderer;
+        public MeshRenderer IsPersistentRenderer { get { return isPersistentRenderer; } }
+
         [Header("Details")]
         [SerializeField] private Ability stored;
         public Ability Stored { get { return stored; } private set { stored = value; } }
@@ -30,6 +33,10 @@ namespace Abilities
         public OnAbilityChanged AbilityChanged { get; set; }
         public bool IsActive { get; private set; }
 
+        private void Start()
+        {
+            this.IsPersistentRenderer.material.color = this.IsPersistent ? Color.green : this.IsPersistentRenderer.material.color;
+        }
 
         private void OnTriggerEnter(Collider other)
         {

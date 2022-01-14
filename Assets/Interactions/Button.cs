@@ -21,16 +21,12 @@ namespace Interactions
         [SerializeField] private Transform visualButtonTransform;
         public Transform VisualButtonTransform { get { return visualButtonTransform; } }
 
-
-
-
+        [Header("Settings")]
         [SerializeField] private SignalChannel signalChannel;
         public SignalChannel SignalChannel { get { return signalChannel; } }
 
-        [SerializeField] private bool isActive;
-        public bool IsActive { get { return isActive; } private set { isActive = value; } }
-
         Vector3 InitialVisualButtonTransform_LocalPosition { get; set; }
+        bool IsActive { get; set; }
 
         private void Awake()
         {
@@ -39,6 +35,8 @@ namespace Interactions
 
         private void Update()
         {
+            this.IsActive = SignalManager.Instance.GetSignal(this.SignalChannel);
+
             this.UpdateColors();
             this.UpdateTransforms();
         }
@@ -62,15 +60,7 @@ namespace Interactions
 
         public void Activate()
         {
-            this.SetIsActive(!this.IsActive);
-        }
-
-        void SetIsActive(bool value)
-        {
-            if (this.IsActive == value)
-                return;
-
-            this.IsActive = this.SendSignal(this.SignalChannel, value ? 1 : 0) > 0;
+            this.SendSignal(this.SignalChannel);
         }
     }
 }

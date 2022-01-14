@@ -21,6 +21,10 @@ namespace Movement
         [SerializeField] private SphereCollisionCheck groundCheck;
         public SphereCollisionCheck GroundCheck { get { return this.groundCheck; } }
 
+        [SerializeField] private LayerMask groundLayer;
+        public LayerMask GroundLayer { get { return groundLayer; } set { groundLayer = value; } }
+
+
 
         [Header("Config")]
         [SerializeField] private MovementConfig config;
@@ -189,7 +193,7 @@ namespace Movement
         // Check for Grounds
         private void UpdateGrounded()
         {
-            if (this.GroundCheck.CheckNonAloc(5))
+            if (this.GroundCheck.CheckNonAloc(5, this.GroundLayer))
             {
                 this.IsGrounded = true;
 
@@ -224,7 +228,7 @@ namespace Movement
         private void UpdateSlope()
         {
             RaycastHit slopeHit;
-            if (Physics.Raycast(this.transform.position, Vector3.down, out slopeHit, 1.5f))
+            if (Physics.Raycast(this.transform.position, Vector3.down, out slopeHit, 1.5f, this.GroundLayer))
             {
                 this.SlopeHit = slopeHit;
                 this.IsOnSlope = this.SlopeHit.normal != Vector3.up;
@@ -292,7 +296,10 @@ namespace Movement
                 Debug.Log($"IS MA >> {ability} ->> {this.Ability}");
             }
             else
+            {
+                this.Ability = null;
                 Debug.Log($"IS NOT MA>> {ability}");
+            }
         }
 
 

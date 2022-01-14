@@ -405,5 +405,5 @@ MonoBehaviour:
     localPosition: {x: 0, y: -3.95, z: 0}
   - state: 1
     localPosition: {x: 0, y: 0, z: 0}
-  timeToOpenDefault: 0
+  timeToOpenDefault: 1
   reactionTimeDefault: 0

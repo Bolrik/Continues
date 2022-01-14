@@ -10,12 +10,9 @@ namespace Signals
 {
     public static partial class Extension
     {
-        public static float SendSignal(this ISignalSender signalSender, SignalChannel signalChannel, float value)
+        public static bool SendSignal(this ISignalSender signalSender, SignalChannel signalChannel)
         {
-            SignalManager.Instance.SetSignal(signalChannel, value);
-            Debug.Log($"Sending on Channel: {signalChannel} >> {value}");
-
-            return value;
+            return SignalManager.Instance.Toggle(signalChannel);
         }
     }
 }

@@ -75,7 +75,7 @@ namespace Interactions
 
         private void UpdateDoor()
         {
-            float signal = SignalManager.Instance.GetSignal(this.SignalChannel);
+            bool signal = SignalManager.Instance.GetSignal(this.SignalChannel);
 
             var signalState = this.ReadSignalState(signal, this.IsInverse);
             this.SetSoorState(signalState.ToDoorState());

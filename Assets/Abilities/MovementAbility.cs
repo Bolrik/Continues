@@ -3,7 +3,7 @@
 namespace Abilities
 {
     // Provides Extra Stats for Movement
-    [CreateAssetMenu(fileName = "New Movement Ability", menuName = "Movement/Movement Ability")]
+    [CreateAssetMenu(fileName = "New Movement Ability", menuName = "Abilities/Movement Ability")]
     public class MovementAbility : Ability
     {
         [SerializeField] private int jumpCount = 0;

@@ -19,12 +19,18 @@ namespace Utils
         public bool IncludeTrigger { get { return includeTrigger; } private set { includeTrigger = value; } }
 
 
+
         public bool Check()
         {
-            return this.GetCheck(out _);
+            return this.GetCheck(-1, out _);
         }
 
-        public bool GetCheck(out Collider[] colliders)
+        public bool Check(LayerMask layerMask)
+        {
+            return this.GetCheck(layerMask, out _);
+        }
+
+        public bool GetCheck(LayerMask layerMask, out Collider[] colliders)
         {
             float scaleX = this.transform.lossyScale.x / this.transform.localScale.x;
             float scaleY = this.transform.lossyScale.y / this.transform.localScale.y;
@@ -34,7 +40,7 @@ namespace Utils
 
             colliders = Physics.OverlapSphere(this.transform.position +
                 new Vector3(this.Offset.x * scaleX, this.Offset.y * scaleY, this.Offset.z * scaleZ), this.Radius * scale,
-                -1,
+                layerMask,
                 this.IncludeTrigger ? QueryTriggerInteraction.Collide : QueryTriggerInteraction.Ignore);
 
             for (int i = 0; i < colliders.Length; i++)
@@ -51,21 +57,26 @@ namespace Utils
 
         public bool CheckNonAloc(int maxColliders)
         {
-            return this.GetCheckNonAloc(maxColliders, out _);
+            return this.GetCheckNonAloc(maxColliders, -1, out _);
         }
 
-        public bool GetCheckNonAloc(int maxColliders, out Collider[] colliders)
+        public bool CheckNonAloc(int maxColliders, LayerMask layerMask)
+        {
+            return this.GetCheckNonAloc(maxColliders, layerMask, out _);
+        }
+
+        public bool GetCheckNonAloc(int maxColliders, LayerMask layerMask, out Collider[] colliders)
         {
             float scaleX = this.transform.lossyScale.x / this.transform.localScale.x;
             float scaleY = this.transform.lossyScale.y / this.transform.localScale.y;
             float scaleZ = this.transform.lossyScale.z / this.transform.localScale.z;
 
             float scale = Mathf.Min(scaleX, scaleY, scaleZ);
-
+            
             colliders = new Collider[maxColliders];
             Physics.OverlapSphereNonAlloc(this.transform.position +
                 new Vector3(this.Offset.x * scaleX, this.Offset.y * scaleY, this.Offset.z * scaleZ), this.Radius * scale, colliders,
-                -1,
+                layerMask,
                 this.IncludeTrigger ? QueryTriggerInteraction.Collide : QueryTriggerInteraction.Ignore);
 
             for (int i = 0; i < colliders.Length; i++)

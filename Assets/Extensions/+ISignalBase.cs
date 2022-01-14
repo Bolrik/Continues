@@ -10,11 +10,9 @@ namespace Signals
 {
     public static partial class Extension
     {
-        public static SignalState ReadSignalState(this ISignalBase signalBase, float signalValue, bool isInverse)
+        public static SignalState ReadSignalState(this ISignalBase signalBase, bool signal, bool isInverse)
         {
-            bool isActive = signalValue > 0;
-
-            return (isActive == isInverse) ? SignalState.Inactive : SignalState.Active;
+            return (signal == isInverse) ? SignalState.Inactive : SignalState.Active;
         }
     }
 }

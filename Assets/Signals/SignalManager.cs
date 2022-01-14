@@ -24,14 +24,16 @@ namespace Signals
         }
         #endregion
 
-        private SignalValue[] signalValues;
-        public SignalValue[] SignalValues { get { return signalValues; } private set { signalValues = value; } }
+        Dictionary<SignalChannel, bool> SignalStates { get; set; } = new Dictionary<SignalChannel, bool>();
 
         private void Initialize()
         {
             SignalChannel[] channels = (SignalChannel[])Enum.GetValues(typeof(SignalChannel));
 
-            this.SignalValues = channels.Select(channel => new SignalValue(channel, 0)).ToArray();
+            foreach (SignalChannel channel in channels)
+            {
+                this.SignalStates.Add(channel, false);
+            }
         }
 
         public void LoadLevelState(params SignalChannel[] signalChannels)
@@ -39,25 +41,26 @@ namespace Signals
 
         }
 
-        public float SetSignal(SignalValue signalValue)
+        public void Set(SignalChannel signalChannel, bool value)
         {
-            return this.SetSignal(signalValue.Signal, signalValue.Value);
+            this.SignalStates[signalChannel] = value;
         }
 
-        public float SetSignal(SignalChannel signalChannel, float value)
+        public bool Toggle(SignalChannel signalChannel)
         {
-            var currentSignalValue = this.SignalValues.FirstOrDefault(sv => sv.Signal == signalChannel);
+            bool current = this.GetSignal(signalChannel);
 
-            currentSignalValue?.Set(value);
+            this.SignalStates[signalChannel] = !current;
 
-#warning MultiState Value??? Persistent Value Provider
-
-            return value;
+            return this.SignalStates[signalChannel];
         }
 
-        public float GetSignal(SignalChannel signalChannel)
+        public bool GetSignal(SignalChannel signalChannel)
         {
-            return this.SignalValues.FirstOrDefault(signalValue => signalValue.Signal == signalChannel)?.Value ?? 0;
+            if (!this.SignalStates.ContainsKey(signalChannel))
+                this.SignalStates[signalChannel] = false;
+
+            return this.SignalStates[signalChannel];
         }
     }
 
@@ -67,20 +70,13 @@ namespace Signals
         [SerializeField] private SignalChannel signal;
         public SignalChannel Signal { get { return signal; } private set { signal = value; } }
 
-        [SerializeField, Range(0, 1)] private float value;
-        public float Value { get { return value; } private set { this.value = value; } }
-
-        public bool IsActive { get => this.Value >= .5f; }
+        [SerializeField] private bool value;
+        public bool Value { get { return value; } private set { this.value = value; } }
 
 
-        public SignalValue(SignalChannel signal, float value)
+        public SignalValue(SignalChannel signal, bool value)
         {
             this.Signal = signal;
-            this.Value = value;
-        }
-
-        public void Set(float value)
-        {
             this.Value = value;
         }
     }

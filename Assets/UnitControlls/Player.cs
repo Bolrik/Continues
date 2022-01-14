@@ -27,13 +27,18 @@ namespace UnitControlls
         public float InteractionRange { get { return interactionRange; } }
 
 
-        [Header("References / Ability Display")]
+        [Header("References / Abilities")]
         [SerializeField] private Image abilityImage;
         public Image AbilityImage { get { return abilityImage; } }
 
         [SerializeField] private Text abilityDescription;
         public Text AbilityDescription { get { return abilityDescription; } }
 
+        [SerializeField] private Collider barrierCollider;
+        public Collider BarrierCollider { get { return barrierCollider; } }
+
+        [SerializeField] private LayerMask barrierLayer;
+        public LayerMask BarrierLayer { get { return barrierLayer; } }
 
 
 
@@ -69,7 +74,43 @@ namespace UnitControlls
                 this.AbilityImage.sprite = this.Stored.PreviewSprite.Sprite;
                 this.AbilityImage.color = this.Stored.PreviewSprite.Color;
             }
+
+            this.SetAbilityEffect();
         }
+
+        private void SetAbilityEffect()
+        {
+            if (!(this.Stored is PlayerAbility playerAbility))
+            {
+                // Set Ability Defaults
+
+                this.SetDisableBarrierState(false);
+                return;
+            }
+
+            this.SetDisableBarrierState(playerAbility.DisableBarrier);
+        }
+
+
+        private void SetDisableBarrierState(bool value)
+        {
+            // Inverted logic...
+
+            this.BarrierCollider.enabled = !value;
+
+            if (value)
+            {
+                // Enable Barrier Is Ground
+                this.Movement.GroundLayer &= ~this.BarrierLayer;
+            }
+            else
+            {
+                // Disable Barrier Is Ground
+                this.Movement.GroundLayer |= this.BarrierLayer;
+            }
+        }
+
+
 
         Ability IAbilityReceiver.SwapAbility(Ability swapTo)
         {
