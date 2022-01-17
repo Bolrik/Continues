@@ -14,26 +14,31 @@ namespace Movement
 
         bool JumpCache { get; set; }
         bool ActivateCache { get; set; }
+        bool BackCache { get; set; }
 
 
         private void Awake()
         {
             this.InputObserver = new InputObserver();
             this.InputObserver.Enable();
-            this.InputObserver.Player.Jump.started += this.Jump_started;
-            this.InputObserver.Player.Activate.started += this.Activate_started;
+            this.InputObserver.Player.Jump.started += this.JumpStarted;
+            this.InputObserver.Player.Activate.started += this.ActivateStarted;
+            this.InputObserver.Player.Back.started += this.BackStarted;
         }
 
-        private void Activate_started(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+        private void ActivateStarted(UnityEngine.InputSystem.InputAction.CallbackContext obj)
         {
-            Debug.Log("Act");
             this.ActivateCache = true;
         }
 
-        private void Jump_started(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+        private void JumpStarted(UnityEngine.InputSystem.InputAction.CallbackContext obj)
         {
-            Debug.Log("Jump");
             this.JumpCache = true;
+        }
+
+        private void BackStarted(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+        {
+            this.BackCache = true;
         }
 
         public void CreateState()
@@ -45,11 +50,13 @@ namespace Movement
 
             inputState.SetJump(this.JumpCache);
             inputState.SetActivate(this.ActivateCache);
+            inputState.SetBack(this.BackCache);
 
             this.InputState = inputState;
 
             this.ActivateCache = false;
             this.JumpCache = false;
+            this.BackCache = false;
         }
 
         public void Update()

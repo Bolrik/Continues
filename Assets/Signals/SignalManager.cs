@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GameManagement;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -28,11 +29,18 @@ namespace Signals
 
         private void Initialize()
         {
+            LevelLoader.Instance.PreLoadScene += this.ResetSignals;
+
+            this.ResetSignals();
+        }
+
+        private void ResetSignals()
+        {
             SignalChannel[] channels = (SignalChannel[])Enum.GetValues(typeof(SignalChannel));
 
             foreach (SignalChannel channel in channels)
             {
-                this.SignalStates.Add(channel, false);
+                this.SignalStates[channel] = false;
             }
         }
 

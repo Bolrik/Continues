@@ -1,3 +1,4 @@
+using GameManagement;
 using UnityEngine;
 
 namespace Movement
@@ -80,7 +81,10 @@ namespace Movement
 
             var mouseDelta = this.InputState.Look;
 
-            mouseDelta = Vector2.Scale(mouseDelta, new Vector2(this.Sensitivit.x * this.smoothing.x, this.Sensitivit.y * this.smoothing.y));
+            mouseDelta = Vector2.Scale(mouseDelta, 
+                new Vector2(
+                    this.Sensitivit.x * this.smoothing.x * GameSettings.Instance.MouseSensitivity, 
+                this.Sensitivit.y * this.smoothing.y * GameSettings.Instance.MouseSensitivity));
 
             Vector2 mousePositionSmooth = this.MousePositionSmooth;
             mousePositionSmooth.x = Mathf.Lerp(mousePositionSmooth.x, mouseDelta.x, 1f / this.Smoothing.x);

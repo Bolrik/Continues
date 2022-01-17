@@ -1,4 +1,5 @@
 ﻿using Abilities;
+using GameManagement;
 using Interaction;
 using Movement;
 using System;
@@ -142,6 +143,11 @@ namespace UnitControlls
             if (inputState.Activate)
             {
                 this.CheckInteraction();
+            }
+
+            if (inputState.Back)
+            {
+                LevelLoader.Instance.Start(GameScene.GameEntry);
             }
         }
     }
