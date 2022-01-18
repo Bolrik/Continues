@@ -11,7 +11,7 @@ namespace Abilities
     {
         public static Ability SwapAbility(this IAbilityReceiver abilityReceiver, Ability swapTo)
         {
-            Ability toReturn = abilityReceiver.Stored;
+            Ability toReturn = abilityReceiver.Ability;
             abilityReceiver.SetAbility(swapTo);
 
             return toReturn;

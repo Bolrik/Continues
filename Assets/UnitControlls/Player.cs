@@ -42,26 +42,45 @@ namespace UnitControlls
         public LayerMask BarrierLayer { get { return barrierLayer; } }
 
 
-
-
-
-        public Ability Stored { get; private set; }
+        public Ability Ability { get; private set; }
         public OnAbilityChanged AbilityChanged { get; set; }
+
+        IGrabObject GrabObject { get; set; }
 
 
         private void Start()
         {
             this.SetAbility(null);
+
             this.InputController.InputStateChanged += this.InputChanged;
+        }
+
+        private void Update()
+        {
+            if (this.GrabObject != null)
+            {
+                Vector3 target = this.Head.position + this.Head.forward * 2;
+
+                this.GrabObject.Rigidbody.transform.localEulerAngles = 
+                    Vector3.RotateTowards(this.GrabObject.Rigidbody.transform.localEulerAngles, target, .1f, .1f);
+                this.GrabObject.Rigidbody.transform.position =
+                    Vector3.Lerp(target, this.GrabObject.Rigidbody.transform.position, .99f);
+            }
         }
 
 
         public void SetAbility(Ability ability)
         {
-            this.Stored = ability;
-            this.AbilityChanged?.Invoke(this.Stored);
+            this.Ability = ability;
+            this.AbilityChanged?.Invoke(this.Ability);
 
-            if (this.Stored == null)
+            this.SetAbilityText();
+            this.SetAbilityEffect();
+        }
+
+        private void SetAbilityText()
+        {
+            if (this.Ability == null)
             {
                 this.AbilityDescription.gameObject.SetActive(false);
                 this.AbilityImage.gameObject.SetActive(false);
@@ -71,17 +90,15 @@ namespace UnitControlls
                 this.AbilityDescription.gameObject.SetActive(true);
                 this.AbilityImage.gameObject.SetActive(true);
 
-                this.AbilityDescription.text = this.Stored.Description.Aggregate((a, b) => $"{a}{Environment.NewLine}{b}");
-                this.AbilityImage.sprite = this.Stored.PreviewSprite.Sprite;
-                this.AbilityImage.color = this.Stored.PreviewSprite.Color;
+                this.AbilityDescription.text = this.Ability.Description.Aggregate((a, b) => $"{a}{Environment.NewLine}{b}");
+                this.AbilityImage.sprite = this.Ability.PreviewSprite.Sprite;
+                this.AbilityImage.color = this.Ability.PreviewSprite.Color;
             }
-
-            this.SetAbilityEffect();
         }
 
         private void SetAbilityEffect()
         {
-            if (!(this.Stored is PlayerAbility playerAbility))
+            if (!(this.Ability is PlayerAbility playerAbility))
             {
                 // Set Ability Defaults
 
@@ -118,8 +135,6 @@ namespace UnitControlls
             return this.SwapAbility(swapTo);
         }
 
-
-
         private void CheckInteraction()
         {
             Ray ray = new Ray(this.Head.position, this.Head.forward);
@@ -138,11 +153,53 @@ namespace UnitControlls
             }
         }
 
+        private void CheckSpecial()
+        {
+            if (!(this.Ability is PlayerAbility playerAbility))
+            {
+                this.TryGrab();
+                return;
+            }
+        }
+
+
+        private bool TryGrab()
+        {
+            if (this.GrabObject == null)
+            {
+                Ray ray = new Ray(this.Head.position, this.Head.forward);
+                RaycastHit[] hits = Physics.RaycastAll(ray, this.InteractionRange);
+
+                foreach (var hit in hits)
+                {
+                    IGrabObject grabObject = hit.transform.GetComponentInParent<IGrabObject>();
+
+                    this.GrabObject = grabObject;
+                    this.GrabObject.IsGrab(true);
+
+                    return true;
+                }
+            }
+            else
+            {
+                this.GrabObject.IsGrab(false);
+                this.GrabObject = null;
+            }
+
+            return false;
+        }
+
+
         void InputChanged(InputState inputState)
         {
             if (inputState.Activate)
             {
                 this.CheckInteraction();
+            }
+
+            if (inputState.Special)
+            {
+                this.CheckSpecial();
             }
 
             if (inputState.Back)

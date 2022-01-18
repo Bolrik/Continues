@@ -20,7 +20,7 @@ namespace Abilities
 
         [Header("Details")]
         [SerializeField] private Ability stored;
-        public Ability Stored { get { return stored; } private set { stored = value; } }
+        public Ability Ability { get { return stored; } private set { stored = value; } }
 
         [SerializeField] private bool isPersistent = false;
         public bool IsPersistent { get { return isPersistent; } }
@@ -47,7 +47,7 @@ namespace Abilities
 
             if (other.GetComponentInParent<IAbilityReceiver>() is IAbilityReceiver abilityReceiver)
             {
-                this.SetAbility(abilityReceiver.SwapAbility(this.Stored));
+                this.SetAbility(abilityReceiver.SwapAbility(this.Ability));
             }
         }
 
@@ -66,7 +66,7 @@ namespace Abilities
 
         private void AnimatePreview()
         {
-            if (this.Stored == null || !this.IsActive)
+            if (this.Ability == null || !this.IsActive)
                 return;
 
             this.PreviewTransform.localPosition = Vector3.up * Mathf.Sin(Time.time) * .2f;
@@ -75,7 +75,7 @@ namespace Abilities
 
         private void DisplayPreview()
         {
-            if (this.Stored == null || !this.IsActive)
+            if (this.Ability == null || !this.IsActive)
             {
                 this.BeaconBeam.gameObject.SetActive(this.IsActive);
                 this.PreviewTransform.gameObject.SetActive(false);
@@ -84,8 +84,8 @@ namespace Abilities
             else
             {
                 this.PreviewTransform.gameObject.SetActive(true);
-                this.PreviewSpriteRenderer.sprite = this.Stored.PreviewSprite.Sprite;
-                this.PreviewSpriteRenderer.color = this.Stored.PreviewSprite.Color;
+                this.PreviewSpriteRenderer.sprite = this.Ability.PreviewSprite.Sprite;
+                this.PreviewSpriteRenderer.color = this.Ability.PreviewSprite.Color;
             }
         }
 
@@ -95,8 +95,8 @@ namespace Abilities
             if (this.IsPersistent)
                 return;
 
-            this.Stored = ability;
-            this.AbilityChanged?.Invoke(this.Stored);
+            this.Ability = ability;
+            this.AbilityChanged?.Invoke(this.Ability);
         }
 
         // Use Extension Method

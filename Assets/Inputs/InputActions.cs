@@ -75,6 +75,15 @@ namespace Inputs
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""Special"",
+                    ""type"": ""Button"",
+                    ""id"": ""0a62baa2-130f-4b70-90a4-eb80a07fe91f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Back"",
                     ""type"": ""Button"",
                     ""id"": ""0c3df4fc-f953-4c80-ac36-0f472d1db595"",
@@ -176,7 +185,7 @@ namespace Inputs
                 {
                     ""name"": """",
                     ""id"": ""76c62d96-0f35-4527-a0b7-88d2c927c0e0"",
-                    ""path"": ""<Pointer>/press"",
+                    ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -194,6 +203,17 @@ namespace Inputs
                     ""action"": ""Back"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d9dd5ebb-9318-4a21-8499-098ebcbbf261"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Special"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -207,6 +227,7 @@ namespace Inputs
             m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
             m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
             m_Player_Activate = m_Player.FindAction("Activate", throwIfNotFound: true);
+            m_Player_Special = m_Player.FindAction("Special", throwIfNotFound: true);
             m_Player_Back = m_Player.FindAction("Back", throwIfNotFound: true);
         }
 
@@ -272,6 +293,7 @@ namespace Inputs
         private readonly InputAction m_Player_Jump;
         private readonly InputAction m_Player_Sprint;
         private readonly InputAction m_Player_Activate;
+        private readonly InputAction m_Player_Special;
         private readonly InputAction m_Player_Back;
         public struct PlayerActions
         {
@@ -282,6 +304,7 @@ namespace Inputs
             public InputAction @Jump => m_Wrapper.m_Player_Jump;
             public InputAction @Sprint => m_Wrapper.m_Player_Sprint;
             public InputAction @Activate => m_Wrapper.m_Player_Activate;
+            public InputAction @Special => m_Wrapper.m_Player_Special;
             public InputAction @Back => m_Wrapper.m_Player_Back;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
@@ -307,6 +330,9 @@ namespace Inputs
                     @Activate.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnActivate;
                     @Activate.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnActivate;
                     @Activate.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnActivate;
+                    @Special.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSpecial;
+                    @Special.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSpecial;
+                    @Special.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSpecial;
                     @Back.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBack;
                     @Back.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBack;
                     @Back.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBack;
@@ -329,6 +355,9 @@ namespace Inputs
                     @Activate.started += instance.OnActivate;
                     @Activate.performed += instance.OnActivate;
                     @Activate.canceled += instance.OnActivate;
+                    @Special.started += instance.OnSpecial;
+                    @Special.performed += instance.OnSpecial;
+                    @Special.canceled += instance.OnSpecial;
                     @Back.started += instance.OnBack;
                     @Back.performed += instance.OnBack;
                     @Back.canceled += instance.OnBack;
@@ -343,6 +372,7 @@ namespace Inputs
             void OnJump(InputAction.CallbackContext context);
             void OnSprint(InputAction.CallbackContext context);
             void OnActivate(InputAction.CallbackContext context);
+            void OnSpecial(InputAction.CallbackContext context);
             void OnBack(InputAction.CallbackContext context);
         }
     }

@@ -5,7 +5,7 @@ using System.Linq;
 using UnitControlls;
 using UnityEngine;
 
-namespace Interactions
+namespace Interaction
 {
     public class Goal : MonoBehaviour
     {

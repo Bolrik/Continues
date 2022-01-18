@@ -9,6 +9,7 @@ namespace Movement
         public bool Jump { get; private set; }
         public bool Sprint { get; private set; }
         public bool Activate { get; private set; }
+        public bool Special { get; private set; }
         public bool Back { get; private set; }
 
         public void SetMovement(Vector2 movement)
@@ -34,6 +35,11 @@ namespace Movement
         public void SetActivate(bool activate)
         {
             this.Activate = activate;
+        }
+
+        public void SetSpecial(bool special)
+        {
+            this.Special = special;
         }
 
         public void SetBack(bool back)

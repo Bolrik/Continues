@@ -14,6 +14,7 @@ namespace Movement
 
         bool JumpCache { get; set; }
         bool ActivateCache { get; set; }
+        bool SpecialCache { get; set; }
         bool BackCache { get; set; }
 
 
@@ -23,12 +24,18 @@ namespace Movement
             this.InputObserver.Enable();
             this.InputObserver.Player.Jump.started += this.JumpStarted;
             this.InputObserver.Player.Activate.started += this.ActivateStarted;
+            this.InputObserver.Player.Special.started += this.SpecialStarted;
             this.InputObserver.Player.Back.started += this.BackStarted;
         }
 
         private void ActivateStarted(UnityEngine.InputSystem.InputAction.CallbackContext obj)
         {
             this.ActivateCache = true;
+        }
+
+        private void SpecialStarted(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+        {
+            this.SpecialCache = true;
         }
 
         private void JumpStarted(UnityEngine.InputSystem.InputAction.CallbackContext obj)
@@ -50,11 +57,13 @@ namespace Movement
 
             inputState.SetJump(this.JumpCache);
             inputState.SetActivate(this.ActivateCache);
+            inputState.SetSpecial(this.SpecialCache);
             inputState.SetBack(this.BackCache);
 
             this.InputState = inputState;
 
             this.ActivateCache = false;
+            this.SpecialCache = false;
             this.JumpCache = false;
             this.BackCache = false;
         }

@@ -3,7 +3,7 @@ using System;
 using System.Linq;
 using UnityEngine;
 
-namespace Interactions
+namespace Interaction
 {
     public class Door : MonoBehaviour, ISignalReceiver
     {

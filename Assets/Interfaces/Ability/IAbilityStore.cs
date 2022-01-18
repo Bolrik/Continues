@@ -2,7 +2,7 @@
 {
     public interface IAbilityStore
     {
-        Ability Stored { get; }
+        Ability Ability { get; }
 
         OnAbilityChanged AbilityChanged { get; set; }
     }

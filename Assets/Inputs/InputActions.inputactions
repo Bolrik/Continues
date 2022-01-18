@@ -51,6 +51,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Special",
+                    "type": "Button",
+                    "id": "0a62baa2-130f-4b70-90a4-eb80a07fe91f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Back",
                     "type": "Button",
                     "id": "0c3df4fc-f953-4c80-ac36-0f472d1db595",
@@ -152,7 +161,7 @@
                 {
                     "name": "",
                     "id": "76c62d96-0f35-4527-a0b7-88d2c927c0e0",
-                    "path": "<Pointer>/press",
+                    "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -168,6 +177,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Back",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d9dd5ebb-9318-4a21-8499-098ebcbbf261",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Special",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

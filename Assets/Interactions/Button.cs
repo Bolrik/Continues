@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Interactions
+namespace Interaction
 {
     public class Button : MonoBehaviour, ISignalSender, IInteractable
     {
