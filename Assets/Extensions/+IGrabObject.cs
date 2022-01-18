@@ -11,7 +11,11 @@ namespace Interaction
     {
         public static void IsGrab(this IGrabObject grabObject, bool value)
         {
-            grabObject.Rigidbody.isKinematic = value;
+            // grabObject.Rigidbody.isKinematic = value;
+            if (grabObject == null)
+                return;
+
+            grabObject.Rigidbody.useGravity = !value;
         }
     }
 }

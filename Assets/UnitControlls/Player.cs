@@ -46,6 +46,8 @@ namespace UnitControlls
         public OnAbilityChanged AbilityChanged { get; set; }
 
         IGrabObject GrabObject { get; set; }
+        private Vector3 GrabOffset { get; set; }
+
 
 
         private void Start()
@@ -55,16 +57,19 @@ namespace UnitControlls
             this.InputController.InputStateChanged += this.InputChanged;
         }
 
-        private void Update()
+        private void LateUpdate()
         {
             if (this.GrabObject != null)
             {
-                Vector3 target = this.Head.position + this.Head.forward * 2;
+                Vector3 target = this.Head.position + this.Head.forward * 2.5f - this.GrabOffset / 2;
 
-                this.GrabObject.Rigidbody.transform.localEulerAngles = 
-                    Vector3.RotateTowards(this.GrabObject.Rigidbody.transform.localEulerAngles, target, .1f, .1f);
+                Vector3 objectPosition = this.GrabObject.Rigidbody.transform.position;
+
+                this.GrabObject.Rigidbody.angularVelocity = Vector3.Lerp(this.GrabObject.Rigidbody.angularVelocity, Vector3.zero, .6f);
+                this.GrabObject.Rigidbody.velocity = Vector3.Lerp(this.GrabObject.Rigidbody.velocity, Vector3.zero, .6f);
+
                 this.GrabObject.Rigidbody.transform.position =
-                    Vector3.Lerp(target, this.GrabObject.Rigidbody.transform.position, .99f);
+                    Vector3.Lerp(target, objectPosition, .99f);
             }
         }
 
@@ -174,8 +179,11 @@ namespace UnitControlls
                 {
                     IGrabObject grabObject = hit.transform.GetComponentInParent<IGrabObject>();
 
+                    if (grabObject == null) continue;
+
                     this.GrabObject = grabObject;
                     this.GrabObject.IsGrab(true);
+                    this.GrabOffset = this.GrabObject.Rigidbody.transform.InverseTransformPoint(hit.point);
 
                     return true;
                 }
