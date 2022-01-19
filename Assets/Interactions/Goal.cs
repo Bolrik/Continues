@@ -12,11 +12,11 @@ namespace Interaction
         private void OnTriggerEnter(Collider other)
         {
             Player player = other.GetComponentInParent<Player>();
-            Debug.Log(other);
+
             if (player == null)
                 return;
 
-            LevelLoader.Instance.Next();
+            LevelLoader.Instance.SetDone();
         }
     }
 }

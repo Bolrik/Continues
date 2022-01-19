@@ -11,40 +11,46 @@ namespace Movement
         public bool Activate { get; private set; }
         public bool Special { get; private set; }
         public bool Back { get; private set; }
+        public bool Restart { get; private set; }
 
-        public void SetMovement(Vector2 movement)
+        public void SetMovement(Vector2 value)
         {
-            this.Movement = movement;
+            this.Movement = value;
         }
         
-        public void SetLook(Vector2 look)
+        public void SetLook(Vector2 value)
         {
-            this.Look = look;
+            this.Look = value;
         }
 
-        public void SetJump(bool jump)
+        public void SetJump(bool value)
         {
-            this.Jump = jump;
+            this.Jump = value;
         }
 
-        public void SetSprint(bool sprint)
+        public void SetSprint(bool value)
         {
-            this.Sprint = sprint;
+            this.Sprint = value;
         }
 
-        public void SetActivate(bool activate)
+        public void SetActivate(bool value)
         {
-            this.Activate = activate;
+            this.Activate = value;
         }
 
-        public void SetSpecial(bool special)
+        public void SetSpecial(bool value)
         {
-            this.Special = special;
+            this.Special = value;
         }
 
-        public void SetBack(bool back)
+        public void SetBack(bool value)
         {
-            this.Back = back;
+            this.Back = value;
+        }
+
+        public void SetRestart(bool value)
+        {
+            this.Restart = value;
         }
 
         public InputState Combine(InputState inputState)
@@ -56,6 +62,7 @@ namespace Movement
 
             toReturn.Activate = this.Activate | inputState.Activate;
             toReturn.Back = this.Back | inputState.Back;
+            toReturn.Restart = this.Restart | inputState.Restart;
 
             return toReturn;
         }

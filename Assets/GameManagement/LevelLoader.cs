@@ -1,4 +1,5 @@
 using System;
+using UnitControlls;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -21,6 +22,8 @@ namespace GameManagement
 
 
         public Action PreLoadScene { get; set; }
+        private Player Player { get; set; }
+
 
         public void Start(GameScene gameScene)
         {
@@ -30,7 +33,12 @@ namespace GameManagement
         public void Start(int index)
         {
             this.PreLoadScene?.Invoke();
+            this.Player = null;
+
             SceneManager.LoadScene(index);
+
+            if (index > 0)
+                GameSettings.Instance.ShowCursor = false;
         }
 
         public void Restart()
@@ -43,6 +51,23 @@ namespace GameManagement
         {
             Scene scene = SceneManager.GetActiveScene();
             this.Start(scene.buildIndex + 1);
+        }
+
+        public void SetDone()
+        {
+            GameSettings.Instance.ShowCursor = true;
+            this.Player?.GameOver();
+        }
+
+        public void SetActivePlayer(Player player)
+        {
+            this.Player = player;
+        }
+
+        public int GetIndex()
+        {
+            Scene scene = SceneManager.GetActiveScene();
+            return scene.buildIndex;
         }
     }
 

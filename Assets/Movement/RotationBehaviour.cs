@@ -20,9 +20,6 @@ namespace Movement
         [SerializeField] private Vector2 viewClamp = new Vector2(360, 180);
         public Vector2 ViewClamp { get { return this.viewClamp; } }
 
-        [SerializeField] private bool lockCursor;
-        public bool LockCursor { get { return this.lockCursor; } }
-
 
         [SerializeField] private Vector2 sensitivit = new Vector2(2, 2);
         public Vector2 Sensitivit { get { return this.sensitivit; } }
@@ -71,10 +68,11 @@ namespace Movement
 
         void LateUpdate()
         {
-            if (this.LockCursor)
-            {
-                Cursor.lockState = CursorLockMode.Locked;
-            }
+            //if (!GameSettings.Instance.ShowCursor)
+            //{
+            //    Cursor.lockState = CursorLockMode.Locked;
+            //    Cursor.visible
+            //}
 
             var targetOrientation = Quaternion.Euler(this.TargetDirection);
             var targetCharacterOrientation = Quaternion.Euler(this.TargetCharacterDirection);

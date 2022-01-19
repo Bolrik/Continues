@@ -16,6 +16,7 @@ namespace Movement
         bool ActivateCache { get; set; }
         bool SpecialCache { get; set; }
         bool BackCache { get; set; }
+        bool RestartCache { get; set; }
 
 
         private void Awake()
@@ -26,6 +27,7 @@ namespace Movement
             this.InputObserver.Player.Activate.started += this.ActivateStarted;
             this.InputObserver.Player.Special.started += this.SpecialStarted;
             this.InputObserver.Player.Back.started += this.BackStarted;
+            this.InputObserver.Player.Restart.started += this.RestartStarted;
         }
 
         private void ActivateStarted(UnityEngine.InputSystem.InputAction.CallbackContext obj)
@@ -48,6 +50,11 @@ namespace Movement
             this.BackCache = true;
         }
 
+        private void RestartStarted(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+        {
+            this.RestartCache = true;
+        }
+
         public void CreateState()
         {
             InputState inputState = new InputState();
@@ -59,6 +66,7 @@ namespace Movement
             inputState.SetActivate(this.ActivateCache);
             inputState.SetSpecial(this.SpecialCache);
             inputState.SetBack(this.BackCache);
+            inputState.SetRestart(this.RestartCache);
 
             this.InputState = inputState;
 
@@ -66,6 +74,7 @@ namespace Movement
             this.SpecialCache = false;
             this.JumpCache = false;
             this.BackCache = false;
+            this.RestartCache = false;
         }
 
         public void Update()

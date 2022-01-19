@@ -22,17 +22,26 @@ namespace GameManagement
         public Text MouseSensitivityDisplay { get { return mouseSensitivityDisplay; } }
 
 
-
-
         float CameraTime { get; set; }
         int Index { get; set; }
 
 
+        private void Awake()
+        {
+            if (PlayerPrefs.HasKey(GameSettingsKeys.MouseSensitivity))
+            {
+                GameSettings.Instance.MouseSensitivity = PlayerPrefs.GetFloat(GameSettingsKeys.MouseSensitivity);
+            }
+            else
+            {
+                GameSettings.Instance.MouseSensitivity = 1f;
+            }
+        }
+
         // Start is called before the first frame update
         void Start()
         {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
+            GameSettings.Instance.ShowCursor = true;
 
             this.MouseSensitivity.value = GameSettings.Instance.MouseSensitivity;
             this.MouseSensitivityDisplay.text = $"{GameSettings.Instance.MouseSensitivity:N2}";
@@ -67,11 +76,15 @@ namespace GameManagement
 
         public void StartGame()
         {
+            PlayerPrefs.SetFloat(GameSettingsKeys.MouseSensitivity, GameSettings.Instance.MouseSensitivity);
+
             LevelLoader.Instance.Start(GameScene.Level001);
         }
 
         public void ExitGame()
         {
+            PlayerPrefs.SetFloat(GameSettingsKeys.MouseSensitivity, GameSettings.Instance.MouseSensitivity);
+
             Application.Quit();
         }
     }

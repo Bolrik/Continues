@@ -1,6 +1,7 @@
 ﻿using Abilities;
 using GameManagement;
 using Interaction;
+using Levels;
 using Movement;
 using System;
 using System.Collections.Generic;
@@ -42,34 +43,73 @@ namespace UnitControlls
         public LayerMask BarrierLayer { get { return barrierLayer; } }
 
 
+        [Header("References / Level Info")]
+        [SerializeField] private LevelEndScreen levelEndScreen;
+        public LevelEndScreen LevelEndScreen { get { return levelEndScreen; } }
+
+        [SerializeField] private Text currentTime;
+        public Text CurrentTime { get { return currentTime; } }
+
+        [SerializeField] private Text bestTime;
+        public Text BestTime { get { return bestTime; } }
+
+
+
         public Ability Ability { get; private set; }
         public OnAbilityChanged AbilityChanged { get; set; }
 
         IGrabObject GrabObject { get; set; }
-        private Vector3 GrabOffset { get; set; }
 
 
+        private float LevelTime { get; set; }
+        private bool IsGameOver { get; set; }
+        private bool IsPaused { get; set; }
+
+
+
+        private void Awake()
+        {
+            LevelLoader.Instance.SetActivePlayer(this);
+            float levelBest = GameSettings.Instance.GetLevelTime();
+            this.BestTime.text = Assistance.FloatToTimeString(levelBest);
+        }
 
         private void Start()
         {
+            this.LevelEndScreen.Hide();
             this.SetAbility(null);
 
             this.InputController.InputStateChanged += this.InputChanged;
+        }
+
+        private void Update()
+        {
+            if (this.IsGameOver)
+                return;
+
+            this.LevelTime += Time.deltaTime;
+
+            
+            this.CurrentTime.text = Assistance.FloatToTimeString(this.LevelTime);
         }
 
         private void LateUpdate()
         {
             if (this.GrabObject != null)
             {
-                Vector3 target = this.Head.position + this.Head.forward * 2.5f - this.GrabOffset / 2;
-
-                Vector3 objectPosition = this.GrabObject.Rigidbody.transform.position;
-
                 this.GrabObject.Rigidbody.angularVelocity = Vector3.Lerp(this.GrabObject.Rigidbody.angularVelocity, Vector3.zero, .6f);
                 this.GrabObject.Rigidbody.velocity = Vector3.Lerp(this.GrabObject.Rigidbody.velocity, Vector3.zero, .6f);
 
-                this.GrabObject.Rigidbody.transform.position =
-                    Vector3.Lerp(target, objectPosition, .99f);
+
+                Vector3 target = this.Head.position + this.Head.forward * 2.5f;
+
+                Vector3 curGrabPoint = this.GrabObject.GrabPoint.position;
+                // Vector3 newGrabPoint = Vector3.Lerp(target, curGrabPoint, .1f);
+
+                Vector3 grabPointDelta = target - curGrabPoint;
+
+                //this.GrabObject.Rigidbody.transform.position += grabPointDelta;
+                this.GrabObject.Rigidbody.AddForce(grabPointDelta * 2f, ForceMode.Impulse);
             }
         }
 
@@ -107,18 +147,17 @@ namespace UnitControlls
             {
                 // Set Ability Defaults
 
-                this.SetDisableBarrierState(false);
+                this.SetAllowBarrierPhasingState(false);
                 return;
             }
 
-            this.SetDisableBarrierState(playerAbility.DisableBarrier);
+            this.SetAllowBarrierPhasingState(playerAbility.AllowBarrierPhasing);
         }
 
 
-        private void SetDisableBarrierState(bool value)
+        private void SetAllowBarrierPhasingState(bool value)
         {
             // Inverted logic...
-
             this.BarrierCollider.enabled = !value;
 
             if (value)
@@ -131,6 +170,11 @@ namespace UnitControlls
                 // Disable Barrier Is Ground
                 this.Movement.GroundLayer |= this.BarrierLayer;
             }
+        }
+
+        private void SetAllowGrabbingState(bool value)
+        {
+
         }
 
 
@@ -162,15 +206,17 @@ namespace UnitControlls
         {
             if (!(this.Ability is PlayerAbility playerAbility))
             {
-                this.TryGrab();
                 return;
             }
+
+
+            this.TryGrab(playerAbility);
         }
 
 
-        private bool TryGrab()
+        private bool TryGrab(PlayerAbility playerAbility)
         {
-            if (this.GrabObject == null)
+            if (this.GrabObject == null && playerAbility.AllowGrabbing)
             {
                 Ray ray = new Ray(this.Head.position, this.Head.forward);
                 RaycastHit[] hits = Physics.RaycastAll(ray, this.InteractionRange);
@@ -179,11 +225,10 @@ namespace UnitControlls
                 {
                     IGrabObject grabObject = hit.transform.GetComponentInParent<IGrabObject>();
 
-                    if (grabObject == null) continue;
+                    if (grabObject == null || grabObject.Rigidbody.mass > this.Movement.Body.mass) continue;
 
                     this.GrabObject = grabObject;
                     this.GrabObject.IsGrab(true);
-                    this.GrabOffset = this.GrabObject.Rigidbody.transform.InverseTransformPoint(hit.point);
 
                     return true;
                 }
@@ -212,8 +257,27 @@ namespace UnitControlls
 
             if (inputState.Back)
             {
-                LevelLoader.Instance.Start(GameScene.GameEntry);
+                if ((Application.isEditor && inputState.Sprint) || !Application.isEditor)
+                    LevelLoader.Instance.Start(GameScene.GameEntry);
             }
+
+            if (inputState.Restart)
+            {
+                LevelLoader.Instance.Restart();
+            }
+        }
+
+        public void GameOver()
+        {
+            if (this.IsGameOver)
+                return;
+
+            this.IsGameOver = true;
+
+            GameSettings.Instance.ShowCursor = true;
+            GameSettings.Instance.UpdateLevelTime(this.LevelTime);
+
+            this.LevelEndScreen.Show(this.LevelTime);
         }
     }
 }

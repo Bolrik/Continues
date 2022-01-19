@@ -6,7 +6,11 @@ namespace Abilities
     [CreateAssetMenu(fileName = "New Player Ability", menuName = "Abilities/Player Ability")]
     public class PlayerAbility : Ability
     {
-        [SerializeField] private bool disableBarrier;
-        public bool DisableBarrier { get { return disableBarrier; } }
+        [SerializeField] private bool allowBarrierPhasing;
+        public bool AllowBarrierPhasing { get { return allowBarrierPhasing; } }
+
+        [SerializeField] private bool allowGrabbing;
+        public bool AllowGrabbing { get { return allowGrabbing; } }
+
     }
 }

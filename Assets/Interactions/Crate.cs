@@ -14,5 +14,9 @@ namespace Interaction
         [Header("References")]
         [SerializeField] private Rigidbody rigidbody;
         public Rigidbody Rigidbody { get { return rigidbody; } }
+
+        [SerializeField] private Transform grabPoint;
+        public Transform GrabPoint { get { return grabPoint; } }
+
     }
 }

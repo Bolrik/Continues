@@ -91,6 +91,15 @@ namespace Inputs
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Restart"",
+                    ""type"": ""Button"",
+                    ""id"": ""56ca5ea2-82ac-498b-826e-2d04a4ea88b2"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -214,6 +223,17 @@ namespace Inputs
                     ""action"": ""Special"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""20e37abd-a0f1-4aa7-9813-ec68f45a904b"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Restart"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -229,6 +249,7 @@ namespace Inputs
             m_Player_Activate = m_Player.FindAction("Activate", throwIfNotFound: true);
             m_Player_Special = m_Player.FindAction("Special", throwIfNotFound: true);
             m_Player_Back = m_Player.FindAction("Back", throwIfNotFound: true);
+            m_Player_Restart = m_Player.FindAction("Restart", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -295,6 +316,7 @@ namespace Inputs
         private readonly InputAction m_Player_Activate;
         private readonly InputAction m_Player_Special;
         private readonly InputAction m_Player_Back;
+        private readonly InputAction m_Player_Restart;
         public struct PlayerActions
         {
             private @InputObserver m_Wrapper;
@@ -306,6 +328,7 @@ namespace Inputs
             public InputAction @Activate => m_Wrapper.m_Player_Activate;
             public InputAction @Special => m_Wrapper.m_Player_Special;
             public InputAction @Back => m_Wrapper.m_Player_Back;
+            public InputAction @Restart => m_Wrapper.m_Player_Restart;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -336,6 +359,9 @@ namespace Inputs
                     @Back.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBack;
                     @Back.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBack;
                     @Back.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBack;
+                    @Restart.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRestart;
+                    @Restart.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRestart;
+                    @Restart.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRestart;
                 }
                 m_Wrapper.m_PlayerActionsCallbackInterface = instance;
                 if (instance != null)
@@ -361,6 +387,9 @@ namespace Inputs
                     @Back.started += instance.OnBack;
                     @Back.performed += instance.OnBack;
                     @Back.canceled += instance.OnBack;
+                    @Restart.started += instance.OnRestart;
+                    @Restart.performed += instance.OnRestart;
+                    @Restart.canceled += instance.OnRestart;
                 }
             }
         }
@@ -374,6 +403,7 @@ namespace Inputs
             void OnActivate(InputAction.CallbackContext context);
             void OnSpecial(InputAction.CallbackContext context);
             void OnBack(InputAction.CallbackContext context);
+            void OnRestart(InputAction.CallbackContext context);
         }
     }
 }

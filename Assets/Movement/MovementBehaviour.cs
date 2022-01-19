@@ -61,8 +61,8 @@ namespace Movement
         int JumpCount { get; set; } // Multi Jump
 
 
+        public Rigidbody Body { get; private set; }
         InputState InputState { get; set; }
-        Rigidbody Body { get; set; }
         bool DoPostUpdatePlayer { get; set; } = true;
 
         // Movement

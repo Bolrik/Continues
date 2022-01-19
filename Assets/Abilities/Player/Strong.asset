@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8972c924aa754af44821fc72d6fdf54a, type: 3}
-  m_Name: Barrier Break
+  m_Name: Strong
   m_EditorClassIdentifier: 
   previewSprite:
     sprite: {fileID: 3630878042392890860, guid: 5533990ca9cf137478c95e554ef651f4, type: 3}
     color: {r: 1, g: 0.5207871, b: 0.41037738, a: 1}
   description:
-  - You phase through Barriers
-  allowBarrierPhasing: 1
-  allowGrabbing: 0
+  - You can now lift small objects with [RMB]
+  allowBarrierPhasing: 0
+  allowGrabbing: 1
