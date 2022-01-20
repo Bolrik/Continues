@@ -70,6 +70,7 @@ namespace UnitControlls
         private void Awake()
         {
             LevelLoader.Instance.SetActivePlayer(this);
+            GameSettings.Instance.ShowCursor = false;
             float levelBest = GameSettings.Instance.GetLevelTime();
             this.BestTime.text = Assistance.FloatToTimeString(levelBest);
         }

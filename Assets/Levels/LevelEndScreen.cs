@@ -28,6 +28,7 @@ namespace Levels
         {
             this.gameObject.SetActive(true);
 
+            this.LevelInfo.text = $"Level {LevelLoader.Instance.GetIndex():D3}";
             this.Time.text = $"{Assistance.FloatToTimeString(levelTime)}";
             this.Best.text = $"{Assistance.FloatToTimeString(GameSettings.Instance.GetLevelTime(LevelLoader.Instance.GetIndex()))}";
         }
