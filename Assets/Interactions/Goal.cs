@@ -16,7 +16,7 @@ namespace Interaction
             if (player == null)
                 return;
 
-            LevelLoader.Instance.SetDone();
+            LevelManager.Instance.SetDone();
         }
     }
 }

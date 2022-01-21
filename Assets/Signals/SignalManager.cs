@@ -29,7 +29,7 @@ namespace Signals
 
         private void Initialize()
         {
-            LevelLoader.Instance.PreLoadScene += this.ResetSignals;
+            LevelManager.Instance.PreLoadScene += this.ResetSignals;
 
             this.ResetSignals();
         }

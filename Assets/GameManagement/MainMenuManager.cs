@@ -1,10 +1,11 @@
 using Levels;
 using UnityEngine;
 using UnityEngine.UI;
+using Utils;
 
 namespace GameManagement
 {
-    public class GameEntryManager : MonoBehaviour
+    public class MainMenuManager : Singleton<MainMenuManager>
     {
         [SerializeField] private Camera gameCamera;
         public Camera GameCamera { get { return gameCamera; } }
@@ -38,11 +39,13 @@ namespace GameManagement
         int Index { get; set; }
 
 
-        private void Awake()
+        protected override void Awake()
         {
-            if (PlayerPrefs.HasKey(GameSettingsKeys.MouseSensitivity))
+            base.Awake();
+
+            if (PlayerPrefs.HasKey(PlayerPrefKeys.MouseSensitivity))
             {
-                GameSettings.Instance.MouseSensitivity = PlayerPrefs.GetFloat(GameSettingsKeys.MouseSensitivity);
+                GameSettings.Instance.MouseSensitivity = PlayerPrefs.GetFloat(PlayerPrefKeys.MouseSensitivity);
             }
             else
             {
@@ -58,13 +61,7 @@ namespace GameManagement
             this.MouseSensitivity.value = GameSettings.Instance.MouseSensitivity;
             this.MouseSensitivityDisplay.text = $"{GameSettings.Instance.MouseSensitivity:N2}";
 
-            for (int i = 0; i < LevelDataStore.Levels.Length; i++)
-            {
-                LevelData data = LevelDataStore.Levels[i];
-                LevelUI levelUI = GameObject.Instantiate(this.LevelUIPrefab);
-                levelUI.SetData(data);
-                levelUI.transform.SetParent(this.levelSelectionLevelsContent, false);
-            }
+            this.LoadChapter(1);
         }
 
         // Update is called once per frame
@@ -88,18 +85,28 @@ namespace GameManagement
             this.GameCamera.transform.LookAt(this.CameraTarget);
         }
 
+
         public void StartGame()
         {
-            PlayerPrefs.SetFloat(GameSettingsKeys.MouseSensitivity, GameSettings.Instance.MouseSensitivity);
+            PlayerPrefs.SetFloat(PlayerPrefKeys.MouseSensitivity, GameSettings.Instance.MouseSensitivity);
 
-            LevelLoader.Instance.Start(GameScene.Level001);
+            LevelManager.Instance.Start(LevelDataStore.Instance.Get(level => level.Chapter > 0));
         }
 
         public void ExitGame()
         {
-            PlayerPrefs.SetFloat(GameSettingsKeys.MouseSensitivity, GameSettings.Instance.MouseSensitivity);
+            PlayerPrefs.SetFloat(PlayerPrefKeys.MouseSensitivity, GameSettings.Instance.MouseSensitivity);
 
             Application.Quit();
+        }
+
+        public void ResetLevelData()
+        {
+            PlayerPrefs.DeleteAll();
+            PlayerPrefs.SetFloat(PlayerPrefKeys.MouseSensitivity, GameSettings.Instance.MouseSensitivity);
+            LevelManager.Instance.ClearLevelTimes();
+
+            LevelManager.Instance.Restart();
         }
 
 
@@ -113,6 +120,21 @@ namespace GameManagement
         public void LoadLevel(int index)
         {
 
+        }
+
+        public void LoadChapter(int chapter)
+        {
+            this.LevelSelectionLevelsContent.Clear();
+
+            LevelData[] chapterLevels = LevelDataStore.Instance.GetChapter(chapter);
+
+            for (int i = 0; i < chapterLevels.Length; i++)
+            {
+                LevelData data = chapterLevels[i];
+                LevelUI levelUI = GameObject.Instantiate(this.LevelUIPrefab);
+                levelUI.SetData(data);
+                levelUI.transform.SetParent(this.levelSelectionLevelsContent, false);
+            }
         }
     }
 }

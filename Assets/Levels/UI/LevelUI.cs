@@ -1,4 +1,5 @@
-﻿using Levels;
+﻿using GameManagement;
+using Levels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,11 +23,22 @@ namespace Levels
         public Text Time { get { return time; } }
 
 
+        private LevelData LevelData { get; set; }
+
+
         public void SetData(LevelData levelData)
         {
-            this.Preview.sprite = levelData.LevelPreview;
-            this.Info.text = levelData.GetLevelString();
-            this.Time.text = "00:00:001";
+            this.LevelData = levelData;
+
+            this.Preview.sprite = this.LevelData.LevelPreview;
+            this.Info.text = this.LevelData.GetLevelString();
+            this.Time.text = Assistance.FloatToTimeString(LevelManager.Instance.GetLevelTime(this.LevelData));
+            //this.Time.text = "00:00:001";
+        }
+
+        public void StartLevel()
+        {
+            LevelManager.Instance.Start(this.LevelData);
         }
     }
 }

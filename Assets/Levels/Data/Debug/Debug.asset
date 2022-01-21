@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Debug
   m_EditorClassIdentifier: 
   levelPreview: {fileID: 0}
-  chapter: 1
+  chapter: 0
   level: 0
   buildIndex: 9

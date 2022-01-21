@@ -28,9 +28,9 @@ namespace Levels
         {
             this.gameObject.SetActive(true);
 
-            this.LevelInfo.text = $"Level {LevelLoader.Instance.GetIndex():D3}";
+            this.LevelInfo.text = $"Level {LevelManager.Instance.GetIndex():D3}";
             this.Time.text = $"{Assistance.FloatToTimeString(levelTime)}";
-            this.Best.text = $"{Assistance.FloatToTimeString(GameSettings.Instance.GetLevelTime(LevelLoader.Instance.GetIndex()))}";
+            this.Best.text = $"{Assistance.FloatToTimeString(LevelManager.Instance.GetLevelTime())}";
         }
 
         public void Hide()
@@ -40,17 +40,17 @@ namespace Levels
 
         public void Next()
         {
-            LevelLoader.Instance.Next();
+            LevelManager.Instance.Next();
         }
 
         public void Retry()
         {
-            LevelLoader.Instance.Restart();
+            LevelManager.Instance.Restart();
         }
 
         public void MainMenu()
         {
-            LevelLoader.Instance.Start(GameScene.GameEntry);
+            LevelManager.Instance.Start(null);
         }
     }
 }

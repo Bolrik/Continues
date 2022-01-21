@@ -69,9 +69,9 @@ namespace UnitControlls
 
         private void Awake()
         {
-            LevelLoader.Instance.SetActivePlayer(this);
+            LevelManager.Instance.SetActivePlayer(this);
             GameSettings.Instance.ShowCursor = false;
-            float levelBest = GameSettings.Instance.GetLevelTime();
+            float levelBest = LevelManager.Instance.GetLevelTime();
             this.BestTime.text = Assistance.FloatToTimeString(levelBest);
         }
 
@@ -259,12 +259,12 @@ namespace UnitControlls
             if (inputState.Back)
             {
                 if ((Application.isEditor && inputState.Sprint) || !Application.isEditor)
-                    LevelLoader.Instance.Start(GameScene.GameEntry);
+                    LevelManager.Instance.Start(null);
             }
 
             if (inputState.Restart)
             {
-                LevelLoader.Instance.Restart();
+                LevelManager.Instance.Restart();
             }
         }
 
@@ -276,7 +276,7 @@ namespace UnitControlls
             this.IsGameOver = true;
 
             GameSettings.Instance.ShowCursor = true;
-            GameSettings.Instance.UpdateLevelTime(this.LevelTime);
+            LevelManager.Instance.UpdateLevelTime(this.LevelTime);
 
             this.LevelEndScreen.Show(this.LevelTime);
         }
