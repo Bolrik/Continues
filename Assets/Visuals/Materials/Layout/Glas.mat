@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Glas
-  m_Shader: {fileID: -6465566751694194690, guid: 79c670c22ea2c1749a5763564d2faa15, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 17ed864f191357f4aa854508f9b71e75, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -104,6 +104,7 @@ Material:
     - Boolean_2d50bc43c3d54dbea8099507d46115bb: 0
     - Boolean_9adee35eb287498aba882f3ad212a4ed: 0
     - Boolean_ebc79b4947f04e85ad5148ff2c26b12b: 0
+    - Vector1_49e3acf21bc5449c95d2a5373d326f7f: 1
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1

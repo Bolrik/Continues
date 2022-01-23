@@ -99,6 +99,8 @@ namespace GameManagement
         #region Level Time
         public float UpdateLevelTime(LevelData levelData, float time)
         {
+            if (levelData == null) return time;
+
             int index = levelData.BuildIndex;
             Debug.Log($"Update Level Time for {index} : {time}");
 
@@ -138,6 +140,9 @@ namespace GameManagement
         }
         public float GetLevelTime(LevelData levelData)
         {
+            if (levelData == null)
+                return 99 * 60;
+
             int index = levelData.BuildIndex;
 
             if (!this.LevelTimes.ContainsKey(index))
