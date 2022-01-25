@@ -28,6 +28,13 @@ namespace UnitControlls
         [SerializeField] private float interactionRange = 1.337f;
         public float InteractionRange { get { return interactionRange; } }
 
+        [SerializeField] private Image interactionIconImage;
+        public Image InteractionIconImage { get { return interactionIconImage; } }
+
+        [SerializeField] private AudioSource audioSource;
+        public AudioSource AudioSource { get { return audioSource; } }
+
+
 
         [Header("References / Abilities")]
         [SerializeField] private Image abilityImage;
@@ -60,6 +67,8 @@ namespace UnitControlls
 
         IGrabObject GrabObject { get; set; }
 
+        IInteractable Interactable { get; set; }
+
 
         private float LevelTime { get; set; }
         private bool IsGameOver { get; set; }
@@ -90,8 +99,9 @@ namespace UnitControlls
 
             this.LevelTime += Time.deltaTime;
 
-            
             this.CurrentTime.text = Assistance.FloatToTimeString(this.LevelTime);
+
+            this.CheckInteraction();
         }
 
         private void LateUpdate()
@@ -188,19 +198,61 @@ namespace UnitControlls
         private void CheckInteraction()
         {
             Ray ray = new Ray(this.Head.position, this.Head.forward);
-            RaycastHit[] hits = Physics.RaycastAll(ray, this.InteractionRange);
-
-            foreach (var hit in hits)
+            if (Physics.Raycast(ray, out RaycastHit hit, this.InteractionRange))
             {
                 IInteractable interactable = hit.transform.GetComponentInParent<IInteractable>();
 
                 if (interactable == null)
-                    continue;
+                {
+                    this.SetInteractable(null);
+                    return;
+                }
 
-                interactable.Activate();
-
-                return;
+                this.SetInteractable(interactable);
             }
+            else
+                this.SetInteractable(null);
+            //Ray ray = new Ray(this.Head.position, this.Head.forward);
+            //RaycastHit[] hits = Physics.RaycastAll(ray, this.InteractionRange);
+
+            //for (int i = 0; i < hits.Length; i++)
+            //{
+            //    var hit = hits[i];
+            //    IInteractable interactable = hit.transform.GetComponentInParent<IInteractable>();
+
+            //    if (interactable == null)
+            //        continue;
+
+            //    this.Interactable = interactable;
+            //    Debug.Log(i);
+
+            //    return;
+            //}
+        }
+
+        private void SetInteractable(IInteractable interactable)
+        {
+            this.Interactable = interactable;
+
+            if (this.Interactable == null)
+            {
+                this.InteractionIconImage.enabled = false;
+            }
+            else
+            {
+                this.InteractionIconImage.enabled = true;
+                this.InteractionIconImage.sprite = this.Interactable.Icon;
+            }
+        }
+
+        private void Interact()
+        {
+            if (this.Interactable == null)
+                return;
+
+            this.Interactable.Activate();
+            if (this.Interactable.OnUseSound != null)
+                this.AudioSource.PlayOneShot(this.Interactable.OnUseSound, 1);
         }
 
         private void CheckSpecial()
@@ -209,7 +261,6 @@ namespace UnitControlls
             {
                 return;
             }
-
 
             this.TryGrab(playerAbility);
         }
@@ -222,8 +273,10 @@ namespace UnitControlls
                 Ray ray = new Ray(this.Head.position, this.Head.forward);
                 RaycastHit[] hits = Physics.RaycastAll(ray, this.InteractionRange);
 
-                foreach (var hit in hits)
+                for (int i = 0; i < hits.Length; i++)
                 {
+                    var hit = hits[i];
+
                     IGrabObject grabObject = hit.transform.GetComponentInParent<IGrabObject>();
 
                     if (grabObject == null || grabObject.Rigidbody.mass > this.Movement.Body.mass) continue;
@@ -248,7 +301,7 @@ namespace UnitControlls
         {
             if (inputState.Activate)
             {
-                this.CheckInteraction();
+                this.Interact();
             }
 
             if (inputState.Special)

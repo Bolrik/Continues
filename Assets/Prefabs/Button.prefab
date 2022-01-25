@@ -564,4 +564,5 @@ MonoBehaviour:
   onOffBulb: {fileID: 5558617735677653341}
   visualButtonTransform: {fileID: 1659908539078485389}
   signalChannel: 3
-  isActive: 0
+  icon: {fileID: -4722627986321848620, guid: c877642777e253841b4c03850eb79707, type: 3}
+  onUseSound: {fileID: 8300000, guid: 87f526c3ec2397641b0d71273e6a4a73, type: 3}

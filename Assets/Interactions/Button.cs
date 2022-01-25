@@ -21,9 +21,17 @@ namespace Interaction
         [SerializeField] private Transform visualButtonTransform;
         public Transform VisualButtonTransform { get { return visualButtonTransform; } }
 
+
         [Header("Settings")]
         [SerializeField] private SignalChannel signalChannel;
         public SignalChannel SignalChannel { get { return signalChannel; } }
+
+        [SerializeField] private Sprite icon;
+        public Sprite Icon { get { return icon; } }
+
+        [SerializeField] private AudioClip onUseSound;
+        public AudioClip OnUseSound { get { return onUseSound; } }
+
 
         Vector3 InitialVisualButtonTransform_LocalPosition { get; set; }
         bool IsActive { get; set; }

@@ -488,7 +488,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "33e22163264040b78b0609c1e06ea613",
     "m_Id": 0,
-    "m_DisplayName": "SideBorder",
+    "m_DisplayName": "Border",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -1109,10 +1109,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": 611.9999389648438,
-            "y": -0.00000762939453125,
+            "x": 632.0,
+            "y": -81.0,
             "width": 85.0,
-            "height": 125.00000762939453
+            "height": 125.0
         }
     },
     "m_Slots": [
@@ -1234,9 +1234,9 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -353.9999694824219,
-            "y": 181.99998474121095,
-            "width": 99.0,
+            "x": -705.0000610351563,
+            "y": 157.00001525878907,
+            "width": 99.00000762939453,
             "height": 101.0
         }
     },
