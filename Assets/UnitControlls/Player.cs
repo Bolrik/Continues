@@ -31,8 +31,12 @@ namespace UnitControlls
         [SerializeField] private Image interactionIconImage;
         public Image InteractionIconImage { get { return interactionIconImage; } }
 
+        [Header("References / Audio")]
         [SerializeField] private AudioSource audioSource;
         public AudioSource AudioSource { get { return audioSource; } }
+
+        [SerializeField] private AudioSource walkingAudioSource;
+        public AudioSource WalkingAudioSource { get { return walkingAudioSource; } }
 
 
 
@@ -121,6 +125,17 @@ namespace UnitControlls
 
                 //this.GrabObject.Rigidbody.transform.position += grabPointDelta;
                 this.GrabObject.Rigidbody.AddForce(grabPointDelta * 2f, ForceMode.Impulse);
+            }
+            float velocity = this.Movement.Body.velocity.magnitude;
+            if (this.Movement.IsGrounded && velocity > 1)
+            {
+                this.WalkingAudioSource.UnPause();
+                this.WalkingAudioSource.pitch = Mathf.Clamp(0.8f + (.4f * (velocity - 4.2f) / 5.8f), .9f, 1.2f);
+                Debug.Log($"{velocity} ## P {this.WalkingAudioSource.pitch}"); // 5.8 8.7
+            }
+            else
+            {
+                this.WalkingAudioSource.Pause();
             }
         }
 
@@ -212,6 +227,7 @@ namespace UnitControlls
             }
             else
                 this.SetInteractable(null);
+
             //Ray ray = new Ray(this.Head.position, this.Head.forward);
             //RaycastHit[] hits = Physics.RaycastAll(ray, this.InteractionRange);
 

@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Level 1
-  m_Shader: {fileID: -6465566751694194690, guid: 359ddacd5f40d644182d42414d076159, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 2ca345c0638a2904c914646052d35ce0, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -47,9 +47,8 @@ Material:
     - Boolean_2d50bc43c3d54dbea8099507d46115bb: 0
     - Boolean_9adee35eb287498aba882f3ad212a4ed: 0
     - Boolean_ebc79b4947f04e85ad5148ff2c26b12b: 0
-    - Vector1_2a8ed2d27df94784a7eb98614cbeb3fa: 0
-    - Vector1_da4cc1632a43429fabb18362cb0a68a1: 0.08
-    - Vector1_da4cc1632a43429fabb18362cb0a68a1_1: 0.08
+    - Vector1_da4cc1632a43429fabb18362cb0a68a1: 0
+    - Vector1_da4cc1632a43429fabb18362cb0a68a1_1: 0
     - Vector1_da4cc1632a43429fabb18362cb0a68a1_2: 0
     m_Colors:
     - Color_5f91bec1793348f6945ef358594bb24e: {r: 0.92941177, g: 0.9647059, b: 1, a: 1}

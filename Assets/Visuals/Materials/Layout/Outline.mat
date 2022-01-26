@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Rocky
-  m_Shader: {fileID: -6465566751694194690, guid: de5b6e96b692a564e91182238f11d46b, type: 3}
+  m_Name: Outline
+  m_Shader: {fileID: -6465566751694194690, guid: 359ddacd5f40d644182d42414d076159, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -20,7 +20,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - Texture2D_8d4d9ceb96e248169a667c94798d252f:
-        m_Texture: {fileID: 2800000, guid: 3c1dd7e912a3e7a4fa9588da1ab915d2, type: 3}
+        m_Texture: {fileID: 2800000, guid: 7a6b3f405b7816a48935e7caaa2251a1, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - Texture2D_a933379c094b45ae8e9ce610bb1eabc1:
@@ -47,8 +47,9 @@ Material:
     - Boolean_2d50bc43c3d54dbea8099507d46115bb: 0
     - Boolean_9adee35eb287498aba882f3ad212a4ed: 0
     - Boolean_ebc79b4947f04e85ad5148ff2c26b12b: 0
-    - Vector1_da4cc1632a43429fabb18362cb0a68a1: 0
-    - Vector1_da4cc1632a43429fabb18362cb0a68a1_1: 0
+    - Vector1_2a8ed2d27df94784a7eb98614cbeb3fa: 0.01
+    - Vector1_da4cc1632a43429fabb18362cb0a68a1: 0.08
+    - Vector1_da4cc1632a43429fabb18362cb0a68a1_1: 0.08
     - Vector1_da4cc1632a43429fabb18362cb0a68a1_2: 0
     m_Colors:
     - Color_5f91bec1793348f6945ef358594bb24e: {r: 0.92941177, g: 0.9647059, b: 1, a: 1}
@@ -56,5 +57,5 @@ Material:
     - Color_fa73606b91164ae0986df22ffa279dfb: {r: 0.9372549, g: 0.9607843, b: 1, a: 1}
     - Vector2_6a3f7a7c37fa46778cfb90e42db2f45a: {r: 0.7, g: 0.7, b: 0, a: 0}
     - Vector2_8a22d8c2a14d46d3a8cc9934415f012d: {r: 0.4, g: 0.7, b: 0, a: 0}
-    - Vector2_eeb11ad5b62f45b5ac5973aa3ed7bdd2: {r: 0.5, g: 0.5, b: 0, a: 0}
+    - Vector2_eeb11ad5b62f45b5ac5973aa3ed7bdd2: {r: 1.4, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []
