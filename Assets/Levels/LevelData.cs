@@ -10,6 +10,9 @@ namespace Levels
     [CreateAssetMenu(fileName = "New Level Data", menuName = "Level/LevelData")]
     public class LevelData : ScriptableObject
     {
+        [SerializeField] private string display;
+        public string Display { get { return display; } }
+
         [SerializeField] private Sprite levelPreview;
         public Sprite LevelPreview { get { return levelPreview; } }
 
@@ -24,7 +27,10 @@ namespace Levels
 
         public string GetLevelString()
         {
-            return $"{this.Chapter:D2} - {this.Level:D3}";
+            if (string.IsNullOrWhiteSpace(this.Display))
+                return $"{this.Chapter:D2} - {this.Level:D3}";
+            else
+                return this.Display;
         }
     }
 }
