@@ -43,14 +43,7 @@ namespace GameManagement
         {
             base.Awake();
 
-            if (PlayerPrefs.HasKey(PlayerPrefKeys.MouseSensitivity))
-            {
-                GameSettings.Instance.MouseSensitivity = PlayerPrefs.GetFloat(PlayerPrefKeys.MouseSensitivity);
-            }
-            else
-            {
-                GameSettings.Instance.MouseSensitivity = 1f;
-            }
+            GameSettings.Instance.MouseSensitivity = PlayerPrefs.GetFloat(PlayerPrefKeys.MouseSensitivity, 1);
         }
 
         // Start is called before the first frame update
@@ -88,14 +81,14 @@ namespace GameManagement
 
         public void StartGame()
         {
-            PlayerPrefs.SetFloat(PlayerPrefKeys.MouseSensitivity, GameSettings.Instance.MouseSensitivity);
+            this.SaveMouseSensitivity();
 
             LevelManager.Instance.Start(LevelDataStore.Instance.Get(level => level.Chapter > 0));
         }
 
         public void ExitGame()
         {
-            PlayerPrefs.SetFloat(PlayerPrefKeys.MouseSensitivity, GameSettings.Instance.MouseSensitivity);
+            this.SaveMouseSensitivity();
 
             Application.Quit();
         }
@@ -107,6 +100,12 @@ namespace GameManagement
             LevelManager.Instance.ClearLevelTimes();
 
             LevelManager.Instance.Restart();
+        }
+
+        private void SaveMouseSensitivity()
+        {
+            Debug.Log($"Set Mouse Sens: {GameSettings.Instance.MouseSensitivity}");
+            PlayerPrefs.SetFloat(PlayerPrefKeys.MouseSensitivity, GameSettings.Instance.MouseSensitivity);
         }
 
 
