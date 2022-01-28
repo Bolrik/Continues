@@ -131,7 +131,6 @@ namespace UnitControlls
             {
                 this.WalkingAudioSource.UnPause();
                 this.WalkingAudioSource.pitch = Mathf.Clamp(0.8f + (.4f * (velocity - 4.2f) / 5.8f), .9f, 1.2f);
-                Debug.Log($"{velocity} ## P {this.WalkingAudioSource.pitch}"); // 5.8 8.7
             }
             else
             {
