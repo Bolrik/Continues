@@ -7,7 +7,6 @@ env:
 
 jobs:
   buildWebGL:
-    needs: testRunner
     name: Build for WebGL 🖥️
     runs-on: ubuntu-latest
     strategy:
@@ -51,7 +50,6 @@ jobs:
           path: build/WebGL
 
   buildWindows:
-    needs: testRunner
     name: Build for Windows 🖥️
     runs-on: ubuntu-latest
     strategy:
@@ -95,7 +93,6 @@ jobs:
           path: build/StandaloneWindows64
 
   buildLinux:
-    needs: testRunner
     name: Build for Linux 🖥️
     runs-on: ubuntu-latest
     strategy:
