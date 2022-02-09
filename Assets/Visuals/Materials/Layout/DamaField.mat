@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Barrier
+  m_Name: DamaField
   m_Shader: {fileID: -6465566751694194690, guid: 525249fe8d5f48745a61d1e59cc7ad58, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -20,15 +20,15 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - Texture2D_8d4d9ceb96e248169a667c94798d252f:
-        m_Texture: {fileID: 2800000, guid: e6dfec3ba92e67248bc79cf88886d494, type: 3}
+        m_Texture: {fileID: 2800000, guid: 29d8914d2fb212a43b302581c96cf7da, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - Texture2D_a933379c094b45ae8e9ce610bb1eabc1:
-        m_Texture: {fileID: 2800000, guid: e6dfec3ba92e67248bc79cf88886d494, type: 3}
+        m_Texture: {fileID: 2800000, guid: 29d8914d2fb212a43b302581c96cf7da, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - Texture2D_b164698d120e4523890a94ec1cfd16f8:
-        m_Texture: {fileID: 2800000, guid: e6dfec3ba92e67248bc79cf88886d494, type: 3}
+        m_Texture: {fileID: 2800000, guid: 29d8914d2fb212a43b302581c96cf7da, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_c6a8582c020f40ad9714d399ec89ed59_Texture_1:
@@ -53,10 +53,10 @@ Material:
     - Boolean_ebc79b4947f04e85ad5148ff2c26b12b: 0
     - Vector1_8d6c33af571f45a593c1e231698e5597: 0.25
     m_Colors:
-    - Color_5f91bec1793348f6945ef358594bb24e: {r: 766.9961, g: 0, b: 766.9961, a: 1}
-    - Color_d17618dec14f43468dc7d08644ea1def: {r: 766.9961, g: 0, b: 766.9961, a: 1}
-    - Color_fa73606b91164ae0986df22ffa279dfb: {r: 766.9961, g: 0, b: 766.9961, a: 1}
-    - Vector2_6a3f7a7c37fa46778cfb90e42db2f45a: {r: 1, g: 1, b: 0, a: 0}
-    - Vector2_8a22d8c2a14d46d3a8cc9934415f012d: {r: 1, g: 1, b: 0, a: 0}
-    - Vector2_eeb11ad5b62f45b5ac5973aa3ed7bdd2: {r: 1, g: 1, b: 0, a: 0}
+    - Color_5f91bec1793348f6945ef358594bb24e: {r: 4096, g: 48.188236, b: 0, a: 1}
+    - Color_d17618dec14f43468dc7d08644ea1def: {r: 4096, g: 48.188236, b: 0, a: 1}
+    - Color_fa73606b91164ae0986df22ffa279dfb: {r: 4096, g: 48.188236, b: 0, a: 1}
+    - Vector2_6a3f7a7c37fa46778cfb90e42db2f45a: {r: 3, g: 3, b: 0, a: 0}
+    - Vector2_8a22d8c2a14d46d3a8cc9934415f012d: {r: 3, g: 3, b: 0, a: 0}
+    - Vector2_eeb11ad5b62f45b5ac5973aa3ed7bdd2: {r: 3, g: 3, b: 0, a: 0}
   m_BuildTextureStacks: []

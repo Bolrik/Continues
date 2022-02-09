@@ -21,8 +21,10 @@ MonoBehaviour:
   jumpDrag: 2
   jumpForce: 9.81
   jumpControl: 0.4
+  jumpCount: 1
   fallingForce: 20
   jumpMemoryTime: 0.1
   coyoteTime: 0.2
-  jumpCount: 1
+  damageBoostTime: 0.1
+  damageBoostMultiplier: 2
   stableSlopeAngle: 35

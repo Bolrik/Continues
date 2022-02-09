@@ -78,6 +78,9 @@ namespace UnitControlls
         private bool IsGameOver { get; set; }
         private bool IsPaused { get; set; }
 
+        #region Damage
+        private float InvincibleTime { get; set; }
+        #endregion
 
 
         private void Awake()
@@ -102,10 +105,12 @@ namespace UnitControlls
                 return;
 
             this.LevelTime += Time.deltaTime;
+            this.InvincibleTime = Mathf.Clamp(this.InvincibleTime - Time.deltaTime, 0, this.InvincibleTime);
 
             this.CurrentTime.text = Assistance.FloatToTimeString(this.LevelTime);
 
             this.CheckInteraction();
+
         }
 
         private void LateUpdate()
@@ -347,6 +352,18 @@ namespace UnitControlls
             LevelManager.Instance.UpdateLevelTime(this.LevelTime);
 
             this.LevelEndScreen.Show(this.LevelTime);
+        }
+
+
+        public void Damage()
+        {
+            if (this.InvincibleTime > 0)
+                return;
+
+            Debug.Log("Ouch");
+            this.InvincibleTime = .7f;
+
+            this.Movement.SetDamageFrame();
         }
     }
 }

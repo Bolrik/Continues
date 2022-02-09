@@ -59,6 +59,7 @@ namespace Movement
         float JumpMemoryTime { get; set; } = 1; // Jump Memory
         float CoyoteTime { get; set; } = 1; // Coyote Time
         int JumpCount { get; set; } // Multi Jump
+        float DamageBoostTime { get; set; } // Damage Boost
 
 
         public Rigidbody Body { get; private set; }
@@ -350,6 +351,7 @@ namespace Movement
             this.DoPostUpdatePlayer = true;
             this.JumpMemoryTime = Mathf.Clamp(this.JumpMemoryTime += Time.fixedDeltaTime, 0, this.Config.JumpMemoryTime);
             this.CoyoteTime = Mathf.Clamp(this.CoyoteTime += Time.fixedDeltaTime, 0, this.Config.CoyoteTime);
+            this.DamageBoostTime = Mathf.Clamp(this.DamageBoostTime -= Time.fixedDeltaTime, 0, this.Config.DamageBoostTime);
         }
 
 
@@ -358,10 +360,7 @@ namespace Movement
         {
             bool jumpInput = this.InputState.Jump;
             bool jumpMemory = this.JumpMemoryTime < this.Config.JumpMemoryTime;
-            bool isGrounded = this.IsGrounded;
-            bool coyoteGround = this.CoyoteTime < this.Config.CoyoteTime;
             bool jumpCount = this.JumpCount > 0;
-            bool jumpCountFirst = this.JumpCount == this.JumpCountDefault;
 
             if (jumpCount && (jumpInput || jumpMemory))
             {
@@ -374,13 +373,28 @@ namespace Movement
         // J-j-j-j-j-Jump
         void Jump()
         {
+            bool damageBoostJump = this.DamageBoostTime > 0;
+            float damageBoostForceTarget = damageBoostJump ? this.Config.DamageBoostMultiplier : 1;
+            float damageBoostForce = Mathf.Clamp(damageBoostForceTarget, 1, damageBoostForceTarget);
+
+            if (damageBoostJump)
+                Debug.Log("Damage Boost Jump!");
+
             this.Body.velocity = new Vector3(this.Body.velocity.x, 0, this.Body.velocity.z);
-            this.Body.AddForce(this.transform.up * this.JumpForceDefault, ForceMode.Impulse);
+            this.Body.AddForce(this.transform.up * this.JumpForceDefault * damageBoostForce, ForceMode.Impulse);
 
             this.CoyoteTime = this.Config.CoyoteTime;
             this.JumpMemoryTime = this.Config.JumpMemoryTime;
             this.JumpCount--;
+
+            this.DamageBoostTime = 0;
         }
 
+
+
+        public void SetDamageFrame()
+        {
+            this.DamageBoostTime = this.Config.DamageBoostTime;
+        }
     }
 }

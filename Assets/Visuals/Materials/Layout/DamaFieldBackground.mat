@@ -7,14 +7,15 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Barrier
-  m_Shader: {fileID: -6465566751694194690, guid: 525249fe8d5f48745a61d1e59cc7ad58, type: 3}
+  m_Name: DamaFieldBackground
+  m_Shader: {fileID: 4800000, guid: 650dd9526735d5b46b79224bc6e94025, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
+  m_CustomRenderQueue: 2000
+  stringTagMap:
+    RenderType: Opaque
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
@@ -29,6 +30,14 @@ Material:
         m_Offset: {x: 0, y: 0}
     - Texture2D_b164698d120e4523890a94ec1cfd16f8:
         m_Texture: {fileID: 2800000, guid: e6dfec3ba92e67248bc79cf88886d494, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BaseMap:
+        m_Texture: {fileID: 2800000, guid: 29d8914d2fb212a43b302581c96cf7da, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 29d8914d2fb212a43b302581c96cf7da, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_c6a8582c020f40ad9714d399ec89ed59_Texture_1:
@@ -51,12 +60,37 @@ Material:
     - Boolean_2d50bc43c3d54dbea8099507d46115bb: 0
     - Boolean_9adee35eb287498aba882f3ad212a4ed: 0
     - Boolean_ebc79b4947f04e85ad5148ff2c26b12b: 0
-    - Vector1_8d6c33af571f45a593c1e231698e5597: 0.25
+    - Vector1_8d6c33af571f45a593c1e231698e5597: 0.74
+    - _AlphaClip: 0
+    - _Blend: 0
+    - _Cull: 2
+    - _Cutoff: 0.5
+    - _DstBlend: 0
+    - _QueueOffset: 0
+    - _SampleGI: 0
+    - _SrcBlend: 1
+    - _Surface: 0
+    - _ZWrite: 1
     m_Colors:
-    - Color_5f91bec1793348f6945ef358594bb24e: {r: 766.9961, g: 0, b: 766.9961, a: 1}
-    - Color_d17618dec14f43468dc7d08644ea1def: {r: 766.9961, g: 0, b: 766.9961, a: 1}
-    - Color_fa73606b91164ae0986df22ffa279dfb: {r: 766.9961, g: 0, b: 766.9961, a: 1}
-    - Vector2_6a3f7a7c37fa46778cfb90e42db2f45a: {r: 1, g: 1, b: 0, a: 0}
-    - Vector2_8a22d8c2a14d46d3a8cc9934415f012d: {r: 1, g: 1, b: 0, a: 0}
-    - Vector2_eeb11ad5b62f45b5ac5973aa3ed7bdd2: {r: 1, g: 1, b: 0, a: 0}
+    - Color_5f91bec1793348f6945ef358594bb24e: {r: 4096, g: 48.188236, b: 0, a: 1}
+    - Color_d17618dec14f43468dc7d08644ea1def: {r: 4096, g: 48.188236, b: 0, a: 1}
+    - Color_fa73606b91164ae0986df22ffa279dfb: {r: 4096, g: 48.188236, b: 0, a: 1}
+    - Vector2_6a3f7a7c37fa46778cfb90e42db2f45a: {r: 4, g: 4, b: 0, a: 0}
+    - Vector2_8a22d8c2a14d46d3a8cc9934415f012d: {r: 4, g: 4, b: 0, a: 0}
+    - Vector2_eeb11ad5b62f45b5ac5973aa3ed7bdd2: {r: 4, g: 4, b: 0, a: 0}
+    - _BaseColor: {r: 1, g: 0.44059038, b: 0, a: 1}
+    - _Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_BuildTextureStacks: []
+--- !u!114 &2433754601822594392
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 4

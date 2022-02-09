@@ -40,6 +40,9 @@ namespace Movement
         [SerializeField] private float jumpControl = 0.4f;
         public float JumpControl { get { return jumpControl; } }
 
+        [SerializeField] private int jumpCount = 1;
+        public int JumpCount { get { return jumpCount; } }
+
         [SerializeField] private float fallingForce = 5;
         public float FallingForce { get { return fallingForce; } }
 
@@ -49,8 +52,11 @@ namespace Movement
         [SerializeField] private float coyoteTime = .1f;
         public float CoyoteTime { get { return coyoteTime; } }
 
-        [SerializeField] private int jumpCount = 1;
-        public int JumpCount { get { return jumpCount; } }
+        [SerializeField] private float damageBoostTime = .1f;
+        public float DamageBoostTime { get { return damageBoostTime; } }
+
+        [SerializeField] private float damageBoostMultiplier = 1.25f;
+        public float DamageBoostMultiplier { get { return damageBoostMultiplier; } }
 
 
 
