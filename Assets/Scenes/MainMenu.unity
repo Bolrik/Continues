@@ -702,8 +702,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 15}
-  m_SizeDelta: {x: 0, y: -30}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &70198343
 MonoBehaviour:
@@ -1624,7 +1624,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 1249985808958975487, guid: fad8af1cc1d18c4418a248f373ab02e6, type: 3}
+  m_Sprite: {fileID: 3765853880425637702, guid: fad8af1cc1d18c4418a248f373ab02e6, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3022,7 +3022,6 @@ GameObject:
   - component: {fileID: 552690222}
   - component: {fileID: 552690221}
   - component: {fileID: 552690220}
-  - component: {fileID: 552690223}
   m_Layer: 5
   m_Name: Start
   m_TagString: Untagged
@@ -3069,7 +3068,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 3
+  m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -3144,25 +3143,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 552690218}
   m_CullTransparentMesh: 1
---- !u!95 &552690223
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 552690218}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 0a43706568c9eee45b5f7bdeb5acbd65, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1001 &558810166
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3433,7 +3413,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 7627917948383876125, guid: 1ac655fc2334c0d4a93ff5fcd3de2d56, type: 3}
       propertyPath: m_Text
-      value: 2022-??
+      value: 2022-02
       objectReference: {fileID: 0}
     - target: {fileID: 7627917949078890058, guid: 1ac655fc2334c0d4a93ff5fcd3de2d56, type: 3}
       propertyPath: m_Name
@@ -3533,7 +3513,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7627917949078890070, guid: 1ac655fc2334c0d4a93ff5fcd3de2d56, type: 3}
       propertyPath: m_Interactable
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1ac655fc2334c0d4a93ff5fcd3de2d56, type: 3}
@@ -4441,7 +4421,6 @@ GameObject:
   - component: {fileID: 824804622}
   - component: {fileID: 824804621}
   - component: {fileID: 824804620}
-  - component: {fileID: 824804619}
   m_Layer: 5
   m_Name: Exit
   m_TagString: Untagged
@@ -4469,25 +4448,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 360, y: 120}
   m_Pivot: {x: 0.5, y: 0}
---- !u!95 &824804619
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 824804617}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 0a43706568c9eee45b5f7bdeb5acbd65, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &824804620
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4507,7 +4467,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 3
+  m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -4814,8 +4774,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 15}
-  m_SizeDelta: {x: 0, y: -30}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &852445638
 MonoBehaviour:
@@ -5058,8 +5018,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 15}
-  m_SizeDelta: {x: 0, y: -30}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &939627099
 MonoBehaviour:
@@ -5234,7 +5194,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 1249985808958975487, guid: fad8af1cc1d18c4418a248f373ab02e6, type: 3}
+  m_Sprite: {fileID: 3765853880425637702, guid: fad8af1cc1d18c4418a248f373ab02e6, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -5263,7 +5223,6 @@ GameObject:
   - component: {fileID: 1127909090}
   - component: {fileID: 1127909094}
   - component: {fileID: 1127909093}
-  - component: {fileID: 1127909091}
   - component: {fileID: 1127909092}
   - component: {fileID: 1127909095}
   m_Layer: 5
@@ -5293,25 +5252,6 @@ RectTransform:
   m_AnchoredPosition: {x: -20, y: 20}
   m_SizeDelta: {x: 280, y: 100}
   m_Pivot: {x: 1, y: 0}
---- !u!95 &1127909091
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1127909089}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 0a43706568c9eee45b5f7bdeb5acbd65, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &1127909092
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5382,7 +5322,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 3
+  m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -7654,6 +7594,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b92773636d13b3c42bc49b363010e1ef, type: 2}
   - {fileID: 11400000, guid: 302f6ebdefe7aff4ea351f083923294a, type: 2}
   - {fileID: 11400000, guid: 5631cb95f5e7d0e47b4808902df87106, type: 2}
+  - {fileID: 11400000, guid: 06361b3208266324182982dfd9235ed0, type: 2}
 --- !u!1 &1805623565
 GameObject:
   m_ObjectHideFlags: 0

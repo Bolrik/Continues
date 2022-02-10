@@ -204,6 +204,17 @@ namespace Inputs
                 },
                 {
                     ""name"": """",
+                    ""id"": ""b9c15737-e16e-46b5-9586-b40944114e5c"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Activate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""17626e09-f236-47b2-ad66-d592309e8f70"",
                     ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",

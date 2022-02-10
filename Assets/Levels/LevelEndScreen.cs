@@ -24,12 +24,12 @@ namespace Levels
         public Text Best { get { return best; } }
 
 
-        public void Show(float levelTime)
+        public void Show(float levelTime, bool isVictory)
         {
             this.gameObject.SetActive(true);
 
             this.LevelInfo.text = $"Level {LevelManager.Instance.GetIndex():D3}";
-            this.Time.text = $"{Assistance.FloatToTimeString(levelTime)}";
+            this.Time.text = isVictory ? $"{Assistance.FloatToTimeString(levelTime)}" : "xx:xx:xxx";
             this.Best.text = $"{Assistance.FloatToTimeString(LevelManager.Instance.GetLevelTime())}";
         }
 

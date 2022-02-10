@@ -47,7 +47,7 @@ namespace GameManagement
         public void SetDone()
         {
             GameSettings.Instance.ShowCursor = true;
-            this.Player?.GameOver();
+            this.Player?.GameOver(true);
         }
 
         public void SetActivePlayer(Player player)

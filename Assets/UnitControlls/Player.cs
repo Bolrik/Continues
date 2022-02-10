@@ -25,6 +25,9 @@ namespace UnitControlls
         [SerializeField] private Transform head;
         public Transform Head { get { return head; } }
 
+        [SerializeField] private Transform screenShakeTarget;
+        public Transform ScreenShakeTarget { get { return screenShakeTarget; } }
+
         [SerializeField] private float interactionRange = 1.337f;
         public float InteractionRange { get { return interactionRange; } }
 
@@ -65,6 +68,14 @@ namespace UnitControlls
         public Text BestTime { get { return bestTime; } }
 
 
+        #region Damage
+        [Header("References / Damage")]
+        [SerializeField] private HealthBar[] healthBars;
+        public HealthBar[] HealthBars { get { return healthBars; } }
+
+        private float InvincibleTime { get; set; }
+        int Health { get; set; } = 3;
+        #endregion
 
         public Ability Ability { get; private set; }
         public OnAbilityChanged AbilityChanged { get; set; }
@@ -78,9 +89,6 @@ namespace UnitControlls
         private bool IsGameOver { get; set; }
         private bool IsPaused { get; set; }
 
-        #region Damage
-        private float InvincibleTime { get; set; }
-        #endregion
 
 
         private void Awake()
@@ -101,6 +109,8 @@ namespace UnitControlls
 
         private void Update()
         {
+            this.UpdateScreenShake();
+
             if (this.IsGameOver)
                 return;
 
@@ -110,7 +120,6 @@ namespace UnitControlls
             this.CurrentTime.text = Assistance.FloatToTimeString(this.LevelTime);
 
             this.CheckInteraction();
-
         }
 
         private void LateUpdate()
@@ -341,7 +350,7 @@ namespace UnitControlls
             }
         }
 
-        public void GameOver()
+        public void GameOver(bool isVictory)
         {
             if (this.IsGameOver)
                 return;
@@ -349,9 +358,11 @@ namespace UnitControlls
             this.IsGameOver = true;
 
             GameSettings.Instance.ShowCursor = true;
-            LevelManager.Instance.UpdateLevelTime(this.LevelTime);
 
-            this.LevelEndScreen.Show(this.LevelTime);
+            if (isVictory)
+                LevelManager.Instance.UpdateLevelTime(this.LevelTime);
+
+            this.LevelEndScreen.Show(this.LevelTime, isVictory);
         }
 
 
@@ -361,9 +372,38 @@ namespace UnitControlls
                 return;
 
             Debug.Log("Ouch");
+#warning Play Damage Sound
+
             this.InvincibleTime = .7f;
+            // Screen Shake
+            this.ScreenShakeTarget.localEulerAngles = 
+                new Vector3(this.ScreenShakeTarget.localEulerAngles.x, this.ScreenShakeTarget.localEulerAngles.y, 13);
+            
+            this.Health--;
+            int healthBarIndex = this.Health;
+
+            HealthBar healthBar = this.HealthBars[healthBarIndex];
+            healthBar.Shake();
+            healthBar.SetState(HealthBarState.Empty);
 
             this.Movement.SetDamageFrame();
+
+            if (this.Health == 0)
+                this.GameOver(false);
         }
+
+
+        private void UpdateScreenShake()
+        {
+            if (this.ScreenShakeTarget.localEulerAngles.z != 0)
+            {
+                this.ScreenShakeTarget.localEulerAngles =
+                    Vector3.Lerp(
+                        this.ScreenShakeTarget.localEulerAngles,
+                        new Vector3(this.ScreenShakeTarget.localEulerAngles.x, this.ScreenShakeTarget.localEulerAngles.y, 0),
+                        Time.deltaTime * 8f);
+            }
+        }
+
     }
 }
