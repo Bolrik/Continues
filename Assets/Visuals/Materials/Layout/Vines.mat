@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Vines
-  m_Shader: {fileID: -6465566751694194690, guid: 17ed864f191357f4aa854508f9b71e75, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 7ce4f0cbf7b9176479fcb37fcd4bdc9d, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -52,9 +52,9 @@ Material:
     - Vector1_da4cc1632a43429fabb18362cb0a68a1_1: 0
     - Vector1_da4cc1632a43429fabb18362cb0a68a1_2: 0
     m_Colors:
-    - Color_5f91bec1793348f6945ef358594bb24e: {r: 1, g: 1, b: 1, a: 1}
-    - Color_d17618dec14f43468dc7d08644ea1def: {r: 0.9019608, g: 0.9254902, b: 1, a: 1}
-    - Color_fa73606b91164ae0986df22ffa279dfb: {r: 1, g: 1, b: 1, a: 1}
+    - Color_5f91bec1793348f6945ef358594bb24e: {r: 0.764151, g: 0.764151, b: 0.764151, a: 1}
+    - Color_d17618dec14f43468dc7d08644ea1def: {r: 0.7647059, g: 0.7647059, b: 0.7647059, a: 1}
+    - Color_fa73606b91164ae0986df22ffa279dfb: {r: 0.7647059, g: 0.7647059, b: 0.7647059, a: 1}
     - Vector2_6a3f7a7c37fa46778cfb90e42db2f45a: {r: 1, g: 1, b: 0, a: 0}
     - Vector2_8a22d8c2a14d46d3a8cc9934415f012d: {r: 1, g: 1, b: 0, a: 0}
     - Vector2_eeb11ad5b62f45b5ac5973aa3ed7bdd2: {r: 1, g: 1, b: 0, a: 0}
