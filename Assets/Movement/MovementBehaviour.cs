@@ -56,8 +56,7 @@ namespace Movement
         #endregion
 
         // Jumping
-        float JumpMemoryTime { get; set; } = 1; // Jump Memory
-        float CoyoteTime { get; set; } = 1; // Coyote Time
+        float JumpMemoryTime { get; set; } = 0; // Jump Memory
         int JumpCount { get; set; } // Multi Jump
         float DamageBoostTime { get; set; } // Damage Boost
 
@@ -201,7 +200,6 @@ namespace Movement
                 // Just recently jumped...
                 if (this.Body.velocity.y <= 0.25f)
                 {
-                    this.CoyoteTime = 0;
                     this.JumpCount = this.JumpCountDefault;
                 }
 
@@ -253,7 +251,9 @@ namespace Movement
             this.InputState = this.InputState.Combine(inputState);
 
             if (inputState.Jump)
-                this.JumpMemoryTime = 0;
+            {
+                this.JumpMemoryTime = this.Config.JumpMemoryTime;
+            }
 
             this.UpdateInput();
             this.UpdateSpeed();
@@ -349,17 +349,16 @@ namespace Movement
             this.Body.AddForce(force);
 
             this.DoPostUpdatePlayer = true;
-            this.JumpMemoryTime = Mathf.Clamp(this.JumpMemoryTime += Time.fixedDeltaTime, 0, this.Config.JumpMemoryTime);
-            this.CoyoteTime = Mathf.Clamp(this.CoyoteTime += Time.fixedDeltaTime, 0, this.Config.CoyoteTime);
+            this.JumpMemoryTime = Mathf.Clamp(this.JumpMemoryTime -= Time.fixedDeltaTime, 0, this.Config.JumpMemoryTime);
             this.DamageBoostTime = Mathf.Clamp(this.DamageBoostTime -= Time.fixedDeltaTime, 0, this.Config.DamageBoostTime);
         }
 
 
-        // Check whether the Player can jump or not (Coyote Time, Jump Memory...)
+        // Check whether the Player can and wantsTo jump or not (Coyote Time, Jump Memory...)
         bool CanJump()
         {
             bool jumpInput = this.InputState.Jump;
-            bool jumpMemory = this.JumpMemoryTime < this.Config.JumpMemoryTime;
+            bool jumpMemory = this.JumpMemoryTime > 0;
             bool jumpCount = this.JumpCount > 0;
 
             if (jumpCount && (jumpInput || jumpMemory))
@@ -383,8 +382,7 @@ namespace Movement
             this.Body.velocity = new Vector3(this.Body.velocity.x, 0, this.Body.velocity.z);
             this.Body.AddForce(this.transform.up * this.JumpForceDefault * damageBoostForce, ForceMode.Impulse);
 
-            this.CoyoteTime = this.Config.CoyoteTime;
-            this.JumpMemoryTime = this.Config.JumpMemoryTime;
+            this.JumpMemoryTime = 0;
             this.JumpCount--;
 
             this.DamageBoostTime = 0;

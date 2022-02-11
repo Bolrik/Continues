@@ -25,6 +25,10 @@ namespace Levels
         [SerializeField] private int buildIndex;
         public int BuildIndex { get { return buildIndex; } }
 
+        [SerializeField] private bool healthHUDActive;
+        public bool HealthHUDActive { get { return healthHUDActive; } }
+
+
         public string GetLevelString()
         {
             if (string.IsNullOrWhiteSpace(this.Display))

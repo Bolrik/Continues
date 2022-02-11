@@ -12,5 +12,9 @@ namespace Abilities
         [SerializeField] private bool allowGrabbing;
         public bool AllowGrabbing { get { return allowGrabbing; } }
 
+        [SerializeField] private float interactionRange;
+        public float InteractionRange { get { return interactionRange; } }
+
+
     }
 }

@@ -20,6 +20,9 @@ TextureImporter:
   - first:
       213: 3630878042392890860
     second: AbilityIcons_5
+  - first:
+      213: -454915587491371265
+    second: AbilityIcons_6
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -234,7 +237,7 @@ TextureImporter:
         width: 64
         height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -242,6 +245,27 @@ TextureImporter:
       bones: []
       spriteID: ced0893a758736230800000000000000
       internalID: 3630878042392890860
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityIcons_6
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 384
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ff6e9c4fea0dfa9f0800000000000000
+      internalID: -454915587491371265
       vertices: []
       indices: 
       edges: []

@@ -28,9 +28,6 @@ namespace UnitControlls
         [SerializeField] private Transform screenShakeTarget;
         public Transform ScreenShakeTarget { get { return screenShakeTarget; } }
 
-        [SerializeField] private float interactionRange = 1.337f;
-        public float InteractionRange { get { return interactionRange; } }
-
         [SerializeField] private Image interactionIconImage;
         public Image InteractionIconImage { get { return interactionIconImage; } }
 
@@ -70,15 +67,18 @@ namespace UnitControlls
 
         #region Damage
         [Header("References / Damage")]
-        [SerializeField] private HealthBar[] healthBars;
-        public HealthBar[] HealthBars { get { return healthBars; } }
-
-        private float InvincibleTime { get; set; }
-        int Health { get; set; } = 3;
+        [SerializeField] private HealthBarContainer health;
+        public HealthBarContainer Health { get { return health; } }
         #endregion
 
+        [Header("Settings")]
+        [SerializeField] private PlayerConfig config;
+        public PlayerConfig Config { get { return config; } }
+        
         public Ability Ability { get; private set; }
         public OnAbilityChanged AbilityChanged { get; set; }
+
+        float InteractionBufferTime { get; set; }
 
         IGrabObject GrabObject { get; set; }
 
@@ -88,6 +88,20 @@ namespace UnitControlls
         private float LevelTime { get; set; }
         private bool IsGameOver { get; set; }
         private bool IsPaused { get; set; }
+
+
+        #region Default Values
+        float InteractionRangeDefault => this.CalculateInteractionRangeDefault();
+
+
+        private float CalculateInteractionRangeDefault()
+        {
+            float toReturn = 0;
+            if (this.Config != null) toReturn += this.Config.InteractionRange;
+            if (this.Ability is PlayerAbility playerAbility) toReturn = Mathf.Max(toReturn, playerAbility.InteractionRange);
+            return toReturn;
+        }
+        #endregion
 
 
 
@@ -102,6 +116,8 @@ namespace UnitControlls
         private void Start()
         {
             this.LevelEndScreen.Hide();
+            this.Health.Show(LevelManager.Instance.GetLevel());
+            
             this.SetAbility(null);
 
             this.InputController.InputStateChanged += this.InputChanged;
@@ -114,10 +130,12 @@ namespace UnitControlls
             if (this.IsGameOver)
                 return;
 
-            this.LevelTime += Time.deltaTime;
-            this.InvincibleTime = Mathf.Clamp(this.InvincibleTime - Time.deltaTime, 0, this.InvincibleTime);
+            this.UpdateLevelTime();
+            
+            this.Health.Tick(Time.deltaTime);
 
-            this.CurrentTime.text = Assistance.FloatToTimeString(this.LevelTime);
+            this.UpdateInteractionBuffer();
+            
 
             this.CheckInteraction();
         }
@@ -150,6 +168,20 @@ namespace UnitControlls
             {
                 this.WalkingAudioSource.Pause();
             }
+        }
+
+
+        private void UpdateLevelTime()
+        {
+            this.LevelTime += Time.deltaTime;
+            this.CurrentTime.text = Assistance.FloatToTimeString(this.LevelTime);
+        }
+
+        private void UpdateInteractionBuffer()
+        {
+            this.InteractionBufferTime = Mathf.Clamp(this.InteractionBufferTime - Time.deltaTime, 0, this.Config.InteractionBuffer);
+            if (this.InteractionBufferTime > 0)
+                this.Interact();
         }
 
 
@@ -226,7 +258,7 @@ namespace UnitControlls
         private void CheckInteraction()
         {
             Ray ray = new Ray(this.Head.position, this.Head.forward);
-            if (Physics.Raycast(ray, out RaycastHit hit, this.InteractionRange))
+            if (Physics.Raycast(ray, out RaycastHit hit, this.InteractionRangeDefault))
             {
                 IInteractable interactable = hit.transform.GetComponentInParent<IInteractable>();
 
@@ -280,6 +312,8 @@ namespace UnitControlls
                 return;
 
             this.Interactable.Activate();
+            this.InteractionBufferTime = 0;
+
             if (this.Interactable.OnUseSound != null)
                 this.AudioSource.PlayOneShot(this.Interactable.OnUseSound, 1);
         }
@@ -300,7 +334,7 @@ namespace UnitControlls
             if (this.GrabObject == null && playerAbility.AllowGrabbing)
             {
                 Ray ray = new Ray(this.Head.position, this.Head.forward);
-                RaycastHit[] hits = Physics.RaycastAll(ray, this.InteractionRange);
+                RaycastHit[] hits = Physics.RaycastAll(ray, this.InteractionRangeDefault);
 
                 for (int i = 0; i < hits.Length; i++)
                 {
@@ -330,7 +364,7 @@ namespace UnitControlls
         {
             if (inputState.Activate)
             {
-                this.Interact();
+                this.InteractionBufferTime = this.Config.InteractionBuffer;
             }
 
             if (inputState.Special)
@@ -368,27 +402,18 @@ namespace UnitControlls
 
         public void Damage()
         {
-            if (this.InvincibleTime > 0)
+            if (!this.Health.Damage())
+            {
                 return;
+            }
 
-            Debug.Log("Ouch");
-#warning Play Damage Sound
-
-            this.InvincibleTime = .7f;
             // Screen Shake
             this.ScreenShakeTarget.localEulerAngles = 
                 new Vector3(this.ScreenShakeTarget.localEulerAngles.x, this.ScreenShakeTarget.localEulerAngles.y, 13);
-            
-            this.Health--;
-            int healthBarIndex = this.Health;
-
-            HealthBar healthBar = this.HealthBars[healthBarIndex];
-            healthBar.Shake();
-            healthBar.SetState(HealthBarState.Empty);
 
             this.Movement.SetDamageFrame();
 
-            if (this.Health == 0)
+            if (this.Health.Health == 0)
                 this.GameOver(false);
         }
 
@@ -404,6 +429,5 @@ namespace UnitControlls
                         Time.deltaTime * 8f);
             }
         }
-
     }
 }

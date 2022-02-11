@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80318d75bc7391449a30d5befead72bd, type: 3}
   m_Name: 02-001
   m_EditorClassIdentifier: 
-  display: 
+  display: Lava Pit
   levelPreview: {fileID: 21300000, guid: 008e4d7384897564fa30d9515ca2d522, type: 3}
   chapter: 2
   level: 1
   buildIndex: 11
+  healthHUDActive: 1

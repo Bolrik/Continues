@@ -56,7 +56,7 @@ namespace GameManagement
         }
 
 
-        LevelData GetLevel()
+        public LevelData GetLevel()
         {
             return this.CurrentLevel;
         }
