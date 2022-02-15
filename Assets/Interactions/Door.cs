@@ -116,6 +116,13 @@ namespace Interaction
             this.ReactionTime = this.ReactionTimeDefault;
             this.DoorState = doorState;
         }
+
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = this.SignalChannel.GetColor();
+            Gizmos.DrawSphere(this.transform.position, .35f);
+        }
     }
 
     [System.Serializable]

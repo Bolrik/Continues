@@ -70,5 +70,11 @@ namespace Interaction
         {
             this.SendSignal(this.SignalChannel);
         }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = this.SignalChannel.GetColor();
+            Gizmos.DrawSphere(this.transform.position, .2f);
+        }
     }
 }
