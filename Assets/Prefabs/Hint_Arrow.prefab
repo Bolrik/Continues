@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3550498819752271168}
   - component: {fileID: 3550498819752271169}
   m_Layer: 0
-  m_Name: Hint
+  m_Name: Hint_Arrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -71,8 +71,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -9018111846463007574, guid: 7b43dba7240e8ed44a04410b32feed6c, type: 3}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Sprite: {fileID: -5300756708933983464, guid: 7b43dba7240e8ed44a04410b32feed6c, type: 3}
+  m_Color: {r: 0.8490566, g: 0.76495194, b: 0.76495194, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
