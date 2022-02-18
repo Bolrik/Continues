@@ -12,7 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80318d75bc7391449a30d5befead72bd, type: 3}
   m_Name: 01-004
   m_EditorClassIdentifier: 
+  display: 
   levelPreview: {fileID: 21300000, guid: 8298fcf969f8658468f4c4387c1122d7, type: 3}
   chapter: 1
   level: 4
+  devTime: 5.859469
+  hasSecret: 0
   buildIndex: 4
+  healthHUDActive: 0

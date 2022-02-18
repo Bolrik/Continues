@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GameManagement;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,14 @@ namespace Levels
         [SerializeField] private int level;
         public int Level { get { return level; } }
 
+        [SerializeField] private float devTime;
+        public float DevTime { get { return devTime; } }
+
+        [SerializeField] private bool hasSecret;
+        public bool HasSecret { get { return hasSecret; } }
+
+
+
         [SerializeField] private int buildIndex;
         public int BuildIndex { get { return buildIndex; } }
 
@@ -35,6 +44,11 @@ namespace Levels
                 return $"{this.Chapter:D2} - {this.Level:D3}";
             else
                 return this.Display;
+        }
+
+        public float GetLevelTime()
+        {
+            return LevelManager.Instance.GetLevelTime(this);
         }
     }
 }

@@ -537,7 +537,7 @@ GameObject:
   - component: {fileID: 729512106}
   - component: {fileID: 729512107}
   m_Layer: 5
-  m_Name: LevelEndScreen
+  m_Name: LevelScreen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -576,6 +576,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelInfo: {fileID: 1321069133}
+  nextLevelButton: {fileID: 3559498430435067395}
   time: {fileID: 162418940}
   best: {fileID: 1805939820}
 --- !u!1 &746545668

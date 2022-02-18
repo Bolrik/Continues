@@ -55,8 +55,8 @@ namespace UnitControlls
 
 
         [Header("References / Level Info")]
-        [SerializeField] private LevelEndScreen levelEndScreen;
-        public LevelEndScreen LevelEndScreen { get { return levelEndScreen; } }
+        [SerializeField] private LevelScreenUI levelEndScreen;
+        public LevelScreenUI LevelEndScreen { get { return levelEndScreen; } }
 
         [SerializeField] private Text currentTime;
         public Text CurrentTime { get { return currentTime; } }

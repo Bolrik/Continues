@@ -9,11 +9,15 @@ using UnityEngine.UI;
 
 namespace Levels
 {
-    public class LevelEndScreen : MonoBehaviour
+    public class LevelScreenUI : MonoBehaviour
     {
         [Header("References/General")]
         [SerializeField] private Text levelInfo;
         public Text LevelInfo { get { return levelInfo; } }
+
+        [SerializeField] private Button nextLevelButton;
+        public Button NextLevelButton { get { return nextLevelButton; } }
+
 
 
         [Header("References/Time")]
@@ -31,6 +35,7 @@ namespace Levels
             this.LevelInfo.text = $"Level {LevelManager.Instance.GetIndex():D3}";
             this.Time.text = isVictory ? $"{Assistance.FloatToTimeString(levelTime)}" : "xx:xx:xxx";
             this.Best.text = $"{Assistance.FloatToTimeString(LevelManager.Instance.GetLevelTime())}";
+            this.NextLevelButton.interactable = isVictory;
         }
 
         public void Hide()

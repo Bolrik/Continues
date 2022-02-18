@@ -16,5 +16,7 @@ MonoBehaviour:
   levelPreview: {fileID: 21300000, guid: 84d13a927ee67ea4cb0aaae06c760244, type: 3}
   chapter: 1
   level: 2
+  devTime: 6.599617
+  hasSecret: 1
   buildIndex: 2
   healthHUDActive: 0
