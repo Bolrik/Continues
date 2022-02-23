@@ -59,6 +59,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa8cd4e2f40777042ae7c39d1a1b1c1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  icon: {fileID: -4722627986321848620, guid: c877642777e253841b4c03850eb79707, type: 3}
+  onUseSound: {fileID: 8300000, guid: fdd881b5e8e9ce04381a5caa2f7e3621, type: 3}
 --- !u!54 &3682089632469105556
 Rigidbody:
   m_ObjectHideFlags: 0

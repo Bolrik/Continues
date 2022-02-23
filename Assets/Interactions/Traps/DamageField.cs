@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace Interaction
 {
-    public class DamageField : MonoBehaviour
+    public class DamageField : MonoBehaviour, IHazard
     {
         private void OnTriggerStay(Collider other)
         {

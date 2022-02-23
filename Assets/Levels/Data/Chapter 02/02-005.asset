@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 80318d75bc7391449a30d5befead72bd, type: 3}
-  m_Name: 02-004
+  m_Name: 02-005
   m_EditorClassIdentifier: 
-  display: Lost
+  display: Rising Tide
   levelPreview: {fileID: 21300000, guid: 008e4d7384897564fa30d9515ca2d522, type: 3}
   chapter: 2
-  level: 4
-  devTime: 27.58221
-  hasSecret: 1
-  buildIndex: 14
+  level: 5
+  devTime: 0
+  hasSecret: 0
+  buildIndex: 15
   healthHUDActive: 1

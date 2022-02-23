@@ -315,7 +315,14 @@ namespace UnitControlls
             this.InteractionBufferTime = 0;
 
             if (this.Interactable.OnUseSound != null)
-                this.AudioSource.PlayOneShot(this.Interactable.OnUseSound, 1);
+            {
+                Play(this.Interactable.OnUseSound);
+            }
+        }
+
+        public void Play(AudioClip audioClip, float volumeScale = 1)
+        {
+            this.AudioSource.PlayOneShot(audioClip, volumeScale);
         }
 
         private void CheckSpecial()

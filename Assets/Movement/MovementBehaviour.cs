@@ -70,13 +70,14 @@ namespace Movement
         Vector3 SlopeMoveDirection { get; set; }
         float MoveSpeed { get; set; }
         public bool IsGrounded { get; private set; }
-
+        bool IsJumpFrame { get; set; }
 
 
         // Slopes
         RaycastHit SlopeHit { get; set; }
         bool IsOnSlope { get; set; }
         bool IsSlopeMovement { get; set; }
+        
 
         // Default Values
         int JumpCountDefault => this.CalculateJumpCountDefault();
@@ -188,6 +189,7 @@ namespace Movement
 
             this.InputState = new InputState();
             this.DoPostUpdatePlayer = false;
+            this.IsJumpFrame = false;
         }
 
         // Check for Grounds
@@ -198,7 +200,8 @@ namespace Movement
                 this.IsGrounded = true;
 
                 // Just recently jumped...
-                if (this.Body.velocity.y <= 0.25f)
+                // if (this.Body.velocity.y <= 0.25f)
+                if(!this.IsJumpFrame)
                 {
                     this.JumpCount = this.JumpCountDefault;
                 }
@@ -386,6 +389,7 @@ namespace Movement
             this.JumpCount--;
 
             this.DamageBoostTime = 0;
+            this.IsJumpFrame = true;
         }
 
 

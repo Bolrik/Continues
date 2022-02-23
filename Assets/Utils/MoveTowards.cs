@@ -17,19 +17,22 @@ namespace Utils
         public Transform Destination { get { return destination; } }
 
         [Header("Settings - Delay")]
-        [SerializeField] private float delay = 0f;
-        public float Delay { get { return delay; } }
+        [SerializeField] private Vector2 delay;
+        public Vector2 Delay { get { return delay; } }
 
-        [SerializeField] private float acceleration = 0f;
-        public float Acceleration { get { return acceleration; } }
+        [SerializeField] private Vector2 acceleration;
+        public Vector2 Acceleration { get { return acceleration; } }
+
 
         [Header("Settings - Speed")]
-        [SerializeField] private float speed = 1f;
-        public float Speed { get { return speed; } private set { this.speed = value; } }
+        [SerializeField] private Vector2 speed = Vector2.one;
+        public Vector2 Speed { get { return speed; } private set { speed = value; } }
 
-        [SerializeField] private float speedMax = 1f;
-        public float SpeedMax { get { return speedMax; } }
-        float SpeedDefault { get; set; }
+        [SerializeField] private Vector2 speedMax = Vector2.one;
+        public Vector2 SpeedMax { get { return speedMax; } }
+
+
+        Vector2 SpeedDefault { get; set; }
 
         private float DelayTime { get; set; }
 
@@ -68,12 +71,16 @@ namespace Utils
             if (this.State == MoveTowardsState.Wait)
                 return;
 
-            this.DelayTime = Mathf.Clamp(this.DelayTime + Time.deltaTime, 0, this.Delay);
+            int index = this.State == MoveTowardsState.ToDestination ? 0 : 1;
 
-            if (this.DelayTime < this.Delay)
+            this.DelayTime = Mathf.Clamp(this.DelayTime + Time.deltaTime, 0, this.Delay[index]);
+
+            if (this.DelayTime < this.Delay[index])
                 return;
 
-            this.Speed = Mathf.Clamp(this.Speed + this.Acceleration * Time.deltaTime, 0, this.SpeedMax);
+            Vector2 speed = this.Speed;
+            speed[index] = Mathf.Clamp(this.Speed[index] + this.Acceleration[index] * Time.deltaTime, 0, this.SpeedMax[index]);
+            this.Speed = speed;
 
             Transform currentDestination = this.MoveThis;
 
@@ -87,7 +94,7 @@ namespace Utils
                     break;
             }
 
-            this.MoveThis.position = Vector3.MoveTowards(this.MoveThis.position, currentDestination.position, this.Speed * Time.deltaTime);
+            this.MoveThis.position = Vector3.MoveTowards(this.MoveThis.position, currentDestination.position, this.Speed[index] * Time.deltaTime);
 
             if ((this.MoveThis.position - currentDestination.position).sqrMagnitude <= 0)
             {
@@ -117,6 +124,17 @@ namespace Utils
 
             this.DelayTime = 0;
             this.Speed = this.SpeedDefault;
+        }
+
+        private void OnDrawGizmos()
+        {
+            if (this.Triggers?.Length > 0)
+            {
+                foreach (var trigger in this.Triggers)
+                {
+                    Gizmos.DrawLine(this.transform.position, trigger.transform.position);
+                }
+            }
         }
     }
 
