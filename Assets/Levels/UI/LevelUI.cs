@@ -22,6 +22,10 @@ namespace Levels
         [SerializeField] private Text time;
         public Text Time { get { return time; } }
 
+        [SerializeField] private Image secret;
+        public Image Secret { get { return secret; } }
+
+
 
         private LevelData LevelData { get; set; }
 
@@ -33,6 +37,7 @@ namespace Levels
             this.Preview.sprite = this.LevelData.LevelPreview;
             this.Info.text = this.LevelData.GetLevelString();
             this.Time.text = Assistance.FloatToTimeString(LevelManager.Instance.GetLevelTime(this.LevelData));
+            this.Secret.color = this.LevelData.HasSecret ? this.Secret.color : Color.clear;
             //this.Time.text = "00:00:001";
         }
 

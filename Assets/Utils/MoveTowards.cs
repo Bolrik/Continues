@@ -47,8 +47,8 @@ namespace Utils
         public bool AutoToggle { get { return autoToggle; } }
 
         [Header("Settings - Conditions")]
-        [SerializeField] private AreaTrigger[] triggers;
-        public AreaTrigger[] Triggers { get { return triggers; } }
+        [SerializeField] private UseTrigger[] triggers;
+        public UseTrigger[] Triggers { get { return triggers; } }
 
 
 

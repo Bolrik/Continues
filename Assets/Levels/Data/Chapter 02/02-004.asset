@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 02-004
   m_EditorClassIdentifier: 
   display: Lost
-  levelPreview: {fileID: 21300000, guid: 008e4d7384897564fa30d9515ca2d522, type: 3}
+  levelPreview: {fileID: 21300000, guid: c659bfb8645213b40945d14298b884c1, type: 3}
   chapter: 2
   level: 4
   devTime: 27.58221

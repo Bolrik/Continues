@@ -6,6 +6,8 @@ namespace Interaction
     {
         AudioClip OnUseSound { get; }
         Sprite Icon { get; }
-        void Activate();
+
+        bool Activate();
+        bool CanActivate();
     }
 }

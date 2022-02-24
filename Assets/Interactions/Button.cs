@@ -11,6 +11,8 @@ namespace Interaction
 {
     public class Button : MonoBehaviour, ISignalSender, IInteractable
     {
+        bool IInteractable.CanActivate() => true;
+
         [Header("References")]
         [SerializeField] private MeshRenderer colorPanel;
         public MeshRenderer ColorPanel { get { return colorPanel; } }
@@ -31,6 +33,8 @@ namespace Interaction
 
         [SerializeField] private AudioClip onUseSound;
         public AudioClip OnUseSound { get { return onUseSound; } }
+
+
 
 
         Vector3 InitialVisualButtonTransform_LocalPosition { get; set; }
@@ -66,9 +70,10 @@ namespace Interaction
         }
 
 
-        public void Activate()
+        public bool Activate()
         {
             this.SendSignal(this.SignalChannel);
+            return true;
         }
 
         private void OnDrawGizmos()

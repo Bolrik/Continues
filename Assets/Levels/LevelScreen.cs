@@ -15,9 +15,12 @@ namespace Levels
         {
             // Helpfull
             "Immediately after taking damage, you can jump higher!",
+            "Secrets make a loud 'bong' now and then",
 
             // *'Funny'*
-            "(>'-')> <('-'<) ^('-')^ v('-')v(>'-')> (^-^)"
+            "(>'-')> <('-'<) ^('-')^ v('-')v (>'-')> (^-^)",
+            "TV out of Order... Sorry!",
+            "Watch out, Behind you!"
         };
 
         [SerializeField] private TMP_Text levelName;
@@ -31,6 +34,10 @@ namespace Levels
 
         [SerializeField] private TMP_Text best;
         public TMP_Text Best { get { return best; } }
+
+        [SerializeField] private SpriteRenderer secretRenderer;
+        public SpriteRenderer SecretRenderer { get { return secretRenderer; } }
+
 
 
 
@@ -65,6 +72,7 @@ namespace Levels
                 this.LevelName.text = $"Unknown";
                 this.Time.text = $"99:00:000";
                 this.Best.text = $"99:00:000";
+                this.SecretRenderer.enabled = false;
                 return;
             }
 
@@ -73,6 +81,7 @@ namespace Levels
             this.LevelName.text = $"{levelData.GetLevelString()}";
             this.Time.text = $"{Assistance.FloatToTimeString(levelData.GetLevelTime())}";
             this.Best.text = $"{Assistance.FloatToTimeString(levelData.DevTime)}";
+            this.SecretRenderer.enabled = levelData.HasSecret;
         }
 
         private void NextTip()

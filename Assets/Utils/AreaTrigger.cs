@@ -4,15 +4,31 @@ using UnityEngine;
 
 namespace Utils
 {
-    public class AreaTrigger : MonoBehaviour, ITrigger, IInteractable
+    public class AreaTrigger : UseTrigger
     {
-        [SerializeField] private Sprite icon;
-        public Sprite Icon { get { return icon; } }
+        [Header("Settings - References")]
+        [SerializeField] private MeshRenderer areaRenderer;
+        public MeshRenderer AreaRenderer { get { return areaRenderer; } }
 
-        [SerializeField] private AudioClip onUseSound;
-        public AudioClip OnUseSound { get { return onUseSound; } }
 
-        System.Action OnTrigger { get; set; }
+
+        [Header("Settings - Details")]
+        [SerializeField] private bool isVisible = true;
+        public bool IsVisible { get { return isVisible; } }
+
+        [SerializeField] private bool persistent = true;
+        public bool Persistent { get { return persistent; } }
+
+        [Header("Debug")]
+        [SerializeField] private int triggerCount;
+        public int TriggerCount { get { return triggerCount; } private set { this.triggerCount = value; } }
+
+
+
+        private void Update()
+        {
+            this.AreaRenderer.enabled = this.IsVisible && this.OnCanTrigger();
+        }
 
         private void OnTriggerEnter(Collider other)
         {
@@ -21,30 +37,26 @@ namespace Utils
             if (player == null)
                 return;
 
-            this.Trigger();
-            player.Play(this.OnUseSound);
+            if (this.Trigger() && this.IsVisible)
+                player.Play(this.OnUseSound);
         }
 
-        //void ITrigger.Subscribe(System.Action action)
-        public void Subscribe(System.Action action)
+        protected override void OnTriggered()
         {
-            this.OnTrigger += action;
+            this.TriggerCount++;
         }
 
-        // void ITrigger.Unsubscribe(System.Action action)
-        public void Unsubscribe(System.Action action)
+        protected override bool OnCanTrigger()
         {
-            this.OnTrigger -= action;
+            if (this.Persistent)
+                return base.OnCanActivate();
+
+            return this.TriggerCount <= 0;
         }
 
-        public void Activate()
+        protected override bool OnCanActivate()
         {
-            this.Trigger();
-        }
-
-        private void Trigger()
-        {
-            this.OnTrigger?.Invoke();
+            return this.IsVisible;
         }
     }
 }

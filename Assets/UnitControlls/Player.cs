@@ -262,7 +262,8 @@ namespace UnitControlls
             {
                 IInteractable interactable = hit.transform.GetComponentInParent<IInteractable>();
 
-                if (interactable == null)
+                if (interactable == null || 
+                    !interactable.CanActivate())
                 {
                     this.SetInteractable(null);
                     return;
@@ -308,15 +309,18 @@ namespace UnitControlls
 
         private void Interact()
         {
-            if (this.Interactable == null)
+            if (this.Interactable == null ||
+                !this.Interactable.CanActivate())
                 return;
 
-            this.Interactable.Activate();
+            if (!this.Interactable.Activate())
+                return;
+
             this.InteractionBufferTime = 0;
 
             if (this.Interactable.OnUseSound != null)
             {
-                Play(this.Interactable.OnUseSound);
+                this.Play(this.Interactable.OnUseSound);
             }
         }
 

@@ -11,6 +11,8 @@ namespace Interaction
 {
     public class Link : MonoBehaviour, IInteractable
     {
+        bool IInteractable.CanActivate() => true;
+
         [SerializeField] private AudioClip onUseSound;
         public AudioClip OnUseSound { get { return onUseSound; } }
 
@@ -22,9 +24,10 @@ namespace Interaction
 
 
 
-        public void Activate()
+        public bool Activate()
         {
             System.Diagnostics.Process.Start(this.Value);
+            return true;
         }
     }
 }
