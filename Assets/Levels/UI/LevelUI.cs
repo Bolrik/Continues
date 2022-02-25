@@ -22,6 +22,11 @@ namespace Levels
         [SerializeField] private Text time;
         public Text Time { get { return time; } }
 
+        // Currently My(Dev) Best, future maybe Leaderboard???
+        [SerializeField] private Text best;
+        public Text Best { get { return best; } }
+
+
         [SerializeField] private Image secret;
         public Image Secret { get { return secret; } }
 
@@ -37,6 +42,7 @@ namespace Levels
             this.Preview.sprite = this.LevelData.LevelPreview;
             this.Info.text = this.LevelData.GetLevelString();
             this.Time.text = Assistance.FloatToTimeString(LevelManager.Instance.GetLevelTime(this.LevelData));
+            this.Best.text = Assistance.FloatToTimeString(this.LevelData.DevTime);
             this.Secret.color = this.LevelData.HasSecret ? this.Secret.color : Color.clear;
             //this.Time.text = "00:00:001";
         }

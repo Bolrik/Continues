@@ -16,13 +16,6 @@ namespace Utils
         [SerializeField] private bool isVisible = true;
         public bool IsVisible { get { return isVisible; } }
 
-        [SerializeField] private bool persistent = true;
-        public bool Persistent { get { return persistent; } }
-
-        [Header("Debug")]
-        [SerializeField] private int triggerCount;
-        public int TriggerCount { get { return triggerCount; } private set { this.triggerCount = value; } }
-
 
 
         private void Update()
@@ -43,13 +36,12 @@ namespace Utils
 
         protected override void OnTriggered()
         {
-            this.TriggerCount++;
         }
 
         protected override bool OnCanTrigger()
         {
             if (this.Persistent)
-                return base.OnCanActivate();
+                return true;
 
             return this.TriggerCount <= 0;
         }

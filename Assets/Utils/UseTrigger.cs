@@ -6,6 +6,7 @@ namespace Utils
 {
     public class UseTrigger : MonoBehaviour, ITrigger, IInteractable
     {
+        [Header("Settings")]
         [SerializeField] private Sprite icon;
         public Sprite Icon { get { return icon; } }
 
@@ -14,6 +15,13 @@ namespace Utils
 
         [SerializeField] private bool interactable = true;
         public bool Interactable { get { return interactable; } }
+
+        [SerializeField] private bool persistent = true;
+        public bool Persistent { get { return persistent; } }
+
+        [Header("Debug")]
+        [SerializeField] private int triggerCount;
+        public int TriggerCount { get { return triggerCount; } private set { this.triggerCount = value; } }
 
         System.Action OnTrigger { get; set; }
 
@@ -36,8 +44,7 @@ namespace Utils
                 return false;
             }
 
-            this.Trigger();
-            return true;
+            return this.Trigger();
         }
 
         protected bool Trigger()
@@ -47,6 +54,7 @@ namespace Utils
 
             this.OnTrigger?.Invoke();
             this.OnTriggered();
+            this.TriggerCount++;
 
             return true;
         }
@@ -58,7 +66,10 @@ namespace Utils
 
         private bool CanTrigger()
         {
-            return this.OnCanTrigger();
+            if (this.Persistent)
+                return this.OnCanActivate() && this.OnCanTrigger();
+
+            return this.TriggerCount <= 0 && this.OnCanTrigger();
         }
 
         protected virtual void OnTriggered() { }
