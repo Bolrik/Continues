@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 02-006
   m_EditorClassIdentifier: 
   display: The Climb
-  levelPreview: {fileID: 21300000, guid: 96317ab66d3f125409e656b30ac8426d, type: 3}
+  levelPreview: {fileID: 21300000, guid: c99dc7d00c45c5147aec32671a28152a, type: 3}
   chapter: 2
   level: 6
   devTime: 80.7528
